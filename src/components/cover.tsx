@@ -11,15 +11,17 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   font-size: 100px;
-  /* width: 100px;
-  height: 100px; */
+  cursor: pointer;
   color: var(--accent);
   text-align: center;
 `;
-export default function Cover() {
+export default function Cover({ onClose }) {
+  const onTitleClick = () => {
+    onClose();
+  };
   return (
     <Wrapper>
-      <Title>TICKET BOOK</Title>
+      <Title onClick={onTitleClick}>TICKET BOOK</Title>
     </Wrapper>
   );
 }

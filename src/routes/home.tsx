@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
 import Cover from "../components/cover";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,9 +22,13 @@ const NavLink = styled(Link)`
   }
 `;
 export default function Home() {
+  const [viewCover, setViewCover] = useState(true);
+  const toggleCoverVisibility = () => {
+    setViewCover(!viewCover);
+  };
   return (
     <Wrapper>
-      <Cover />
+      {viewCover && <Cover onClose={toggleCoverVisibility} />}
       <NavLink to="/list">티켓북 보기</NavLink>
       <NavLink to="/create-ticket">티켓 추가하기</NavLink>
     </Wrapper>

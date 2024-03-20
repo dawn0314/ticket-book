@@ -1,5 +1,6 @@
 import Home from "./routes/home";
 import ErrorPage from "./error-page";
+import CreateTicket from "./routes/create-ticket";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/create-ticket",
+    element: <CreateTicket />,
   },
 ]);
 
