@@ -29,8 +29,8 @@ export default function Home() {
   return (
     <Wrapper>
       {viewCover && <Cover onClose={toggleCoverVisibility} />}
-      <NavLink to="/list">티켓북 보기</NavLink>
-      <NavLink to="/create-ticket">티켓 추가하기</NavLink>
+      <NavLink to="/list">OPEN TICKETBOOK</NavLink>
+      <NavLink to="/create-ticket">ADD TICKET</NavLink>
     </Wrapper>
   );
 }

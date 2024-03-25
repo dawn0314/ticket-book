@@ -1,59 +1,61 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import Setlist from "../components/ticket/setlist";
+import AddPhoto from "../components/ticket/add-photo";
+import Details from "../components/ticket/details";
+import Review from "../components/ticket/review";
+
+export interface TicketInfo {
+  title: string;
+  dateAndTime: Date;
+  location: string;
+  seat: string;
+}
+
 export default function CreateTicket() {
-  const [selectedImages, setSelectedImages] = useState([]);
-  const handlePhotoAdd = (e) => {
-    const files = Array.from(e.target.files);
+  const [tickets, setTickets] = useState([]);
+  const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
+    title: "",
+    dateAndTime: undefined,
+    location: "",
+    seat: "",
+  });
+  const saveTicket = () => {
+    const newTicket = {};
+    const updatedTickets = [...tickets, newTicket];
 
-    const imagesArray = files.map((file) => {
-      return URL.createObjectURL(file);
-    });
-
-    setSelectedImages((prevImages) => [...prevImages, ...imagesArray]);
+    setTickets(updatedTickets);
+    localStorage.setItem("tickets", JSON.stringify(updatedTickets));
   };
+
   return (
     <Wrapper>
-      <PreviewContainer>
-        {selectedImages.map((image, index) => (
-          <ImagePreview key={index} src={image} alt={`Preview ${index}`} />
-        ))}
-      </PreviewContainer>
-      <PhotoUpload htmlFor="photo">
-        <AddPhotoAlternateIcon style={iconStyle} />
-      </PhotoUpload>
-      <PhotoInput
-        onChange={handlePhotoAdd}
-        id="photo"
-        type="file"
-        accept="image/*"
-        multiple
-      />
+      <AddPhoto ticketInfo={ticketInfo} />
+      <Details ticketInfo={ticketInfo} />
+      <Setlist ticketInfo={ticketInfo} />
+      <Review ticketInfo={ticketInfo} />
+      <AddButton onClick={saveTicket}>Add Tickets</AddButton>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  padding: 50px 100px;
+  gap: 30px;
+  margin: 0 30px;
+  overflow: auto;
+  background: var(--light);
 `;
-const PhotoUpload = styled.label`
-  color: white;
+const AddButton = styled.button`
+  width: 150px;
+  padding: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  background-color: var(--accent);
+  color: var(--light);
+  font-size: 20px;
   cursor: pointer;
 `;
-const PhotoInput = styled.input`
-  display: none;
-`;
-const iconStyle = {
-  "font-size": "40px",
-};
-
-const PreviewContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-const ImagePreview = styled.img`
-width: 100px;
-height: 100%;
- margin 5px;`;
