@@ -24,11 +24,18 @@ const Textarea = styled.textarea`
 const Title = styled.div`
   padding-bottom: 10px;
 `;
-export default function Review() {
+export default function Review({ setTicketInfo }) {
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setTicketInfo((prev) => ({
+      ...prev,
+      review: value,
+    }));
+  };
   return (
     <Wrapper>
       <Title>REVIEW</Title>
-      <Textarea></Textarea>
+      <Textarea onChange={handleChange}></Textarea>
     </Wrapper>
   );
 }
