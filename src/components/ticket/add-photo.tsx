@@ -3,15 +3,53 @@ import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import Button from "@mui/material/Button";
 
+export default function AddPhoto({ setTicketInfo }) {
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const handlePhotoAdd = (e) => {
+    const files = Array.from(e.target.files);
+    const imagesArray = files.map((file) => {
+      return URL.createObjectURL(file);
+    });
+
+    setSelectedImages((prevImages) => [...prevImages, ...imagesArray]);
+
+    setTicketInfo((prev) => ({
+      ...prev,
+      photo: selectedImages,
+    }));
+  };
+
+  return (
+    <Wrapper>
+      <Title>
+        Photo{" "}
+        <PhotoUpload htmlFor="photo">
+          <AddPhotoAlternateIcon />
+          ADD PHOTO
+        </PhotoUpload>
+        <PhotoInput
+          onChange={handlePhotoAdd}
+          id="photo"
+          type="file"
+          accept="image/*"
+          multiple
+        />
+      </Title>
+      <PreviewContainer>
+        {selectedImages.map((image, index) => (
+          <ImagePreview key={index} src={image} alt={`Preview ${index}`} />
+        ))}
+      </PreviewContainer>
+    </Wrapper>
+  );
+}
+
 const Wrapper = styled.div`
   background-color: #fff;
   border-radius: 20px;
   padding: 20px;
 `;
-
-const iconStyle = {
-  // "font-size": "40px",
-};
 
 const Title = styled.div`
   display: flex;
@@ -47,44 +85,3 @@ const ImagePreview = styled.img`
   margin: 5px;
   border-radius: 15px;
 `;
-
-export default function AddPhoto({ ticketInfo }) {
-  const [selectedImages, setSelectedImages] = useState([]);
-  const handlePhotoAdd = (e) => {
-    const files = Array.from(e.target.files);
-
-    const imagesArray = files.map((file) => {
-      return URL.createObjectURL(file);
-    });
-
-    setSelectedImages((prevImages) => [...prevImages, ...imagesArray]);
-
-    // setTicketInfo((prev) => {
-    //   ...prev, photos: [...prev.photos, ...imagesArray]
-    // })
-  };
-
-  return (
-    <Wrapper>
-      <Title>
-        Photo{" "}
-        <PhotoUpload htmlFor="photo">
-          <AddPhotoAlternateIcon style={iconStyle} />
-          ADD PHOTO
-        </PhotoUpload>
-        <PhotoInput
-          onChange={handlePhotoAdd}
-          id="photo"
-          type="file"
-          accept="image/*"
-          multiple
-        />
-      </Title>
-      <PreviewContainer>
-        {selectedImages.map((image, index) => (
-          <ImagePreview key={index} src={image} alt={`Preview ${index}`} />
-        ))}
-      </PreviewContainer>
-    </Wrapper>
-  );
-}
