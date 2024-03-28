@@ -1,7 +1,11 @@
 import { Box, TextField } from "@mui/material";
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  DatePicker,
+  LocalizationProvider,
+  TimePicker,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 
@@ -30,7 +34,36 @@ const theme = createTheme({
   },
 });
 
-export default function Details({ ticketInfo }) {
+export default function Details({ ticketInfo, setTicketInfo }) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setTicketInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleDateChange = (value) => {
+    const date = new Date(value);
+    const stringDate = `${date.getFullYear()} ${
+      date.getMonth() + 1
+    } ${date.getDate()}`;
+    setTicketInfo((prev) => ({
+      ...prev,
+      date: stringDate,
+    }));
+  };
+
+  const handleTimeChange = (value) => {
+    const time = new Date(value);
+    const stringTime = `${time.getHours()}:${time.getMinutes()}`;
+    setTicketInfo((prev) => ({
+      ...prev,
+      time: stringTime,
+    }));
+  };
+
   return (
     <Wrapper>
       <Box
@@ -43,16 +76,38 @@ export default function Details({ ticketInfo }) {
         paddingRight="8px"
       >
         <ThemeProvider theme={theme}>
-          <TextField fullWidth label="TITLE" value={ticketInfo.title} />
+          <TextField
+            fullWidth
+            label="TITLE"
+            name="title"
+            value={ticketInfo.title}
+            onChange={handleChange}
+          />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              label="DATE/TIME"
-              views={["year", "month", "day", "hours", "minutes"]}
-              value={ticketInfo.dateAndTime}
+            <DatePicker
+              label="DATE"
+              name="date"
+              views={["year", "month", "day"]}
+              onChange={handleDateChange}
+            />
+            <TimePicker
+              label="START TIME"
+              name="time"
+              onChange={handleTimeChange}
             />
           </LocalizationProvider>
-          <TextField label="LOCATOIN" value={ticketInfo.location} />
-          <TextField label="SEAT" value={ticketInfo.seat} />
+          <TextField
+            label="LOCATOIN"
+            name="location"
+            value={ticketInfo.location}
+            onChange={handleChange}
+          />
+          <TextField
+            label="SEAT"
+            name="seat"
+            value={ticketInfo.seat}
+            onChange={handleChange}
+          />
         </ThemeProvider>
       </Box>
     </Wrapper>

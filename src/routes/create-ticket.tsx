@@ -6,19 +6,25 @@ import Details from "../components/ticket/details";
 import Review from "../components/ticket/review";
 
 export interface TicketInfo {
+  photo: File;
   title: string;
-  dateAndTime: Date;
+  date: string;
+  time: string;
   location: string;
   seat: string;
+  review: string;
 }
 
 export default function CreateTicket() {
   const [tickets, setTickets] = useState([]);
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
+    photo: null,
     title: "",
-    dateAndTime: undefined,
+    date: "",
+    time: "",
     location: "",
     seat: "",
+    review: "",
   });
   const saveTicket = () => {
     const newTicket = {};
@@ -30,10 +36,12 @@ export default function CreateTicket() {
 
   return (
     <Wrapper>
-      <AddPhoto ticketInfo={ticketInfo} />
-      <Details ticketInfo={ticketInfo} />
-      <Setlist ticketInfo={ticketInfo} />
-      <Review ticketInfo={ticketInfo} />
+      <AddPhoto setTicketInfo={setTicketInfo} />
+      <FlexContainer>
+        <Details ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
+        <Setlist ticketInfo={ticketInfo} />
+      </FlexContainer>
+      <Review setTicketInfo={setTicketInfo} />
       <AddButton onClick={saveTicket}>Add Tickets</AddButton>
     </Wrapper>
   );
@@ -47,6 +55,11 @@ const Wrapper = styled.div`
   margin: 0 30px;
   overflow: auto;
   background: var(--light);
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  gap: 30px;
 `;
 const AddButton = styled.button`
   width: 150px;
