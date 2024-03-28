@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
   :root {
     --primary-dark: #333333;
     --accent:#cba135;
-    --beige: #e7d590;
+    --beige:#e7d590;
     --light:#f4f1ec;
   }
   * {
@@ -32,6 +32,10 @@ const GlobalStyles = createGlobalStyle`
   }
   ::-webkit-scrollbar {
    display:none;
+  }
+
+  button{
+    cursor: pointer;
   }
 `;
 
