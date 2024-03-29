@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import Button from "@mui/material/Button";
+import { sharedWrapper, sharedTitle } from "./sharedStyles";
 
 export default function AddPhoto({ setTicketInfo }) {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -46,15 +47,12 @@ export default function AddPhoto({ setTicketInfo }) {
 }
 
 const Wrapper = styled.div`
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 20px;
+  ${sharedWrapper}
 `;
 
 const Title = styled.div`
+  ${sharedTitle}
   display: flex;
-  font-size: 20px;
-  font-weight: 600;
   justify-content: space-between;
 `;
 

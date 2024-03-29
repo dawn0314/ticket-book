@@ -1,11 +1,9 @@
 import { styled, css } from "styled-components";
 import MusicSearch from "./music-search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
-
+import { sharedWrapper } from "./sharedStyles";
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: var(--light);
+  ${sharedWrapper}
 `;
 
 const AddTrack = styled.button`

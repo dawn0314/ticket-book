@@ -1,10 +1,9 @@
 import { TextField } from "@mui/material";
 import styled from "styled-components";
+import { sharedWrapper, sharedTitle } from "./sharedStyles";
 
 const Wrapper = styled.div`
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 20px;
+  ${sharedWrapper}
   min-height: 35vh;
 `;
 
@@ -22,6 +21,7 @@ const Textarea = styled.textarea`
 `;
 
 const Title = styled.div`
+  ${sharedTitle}
   padding-bottom: 10px;
 `;
 export default function Review({ setTicketInfo }) {

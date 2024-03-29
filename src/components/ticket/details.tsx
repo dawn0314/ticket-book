@@ -8,12 +8,12 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
+import { sharedWrapper } from "./sharedStyles";
 
 const Wrapper = styled.div`
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 20px;
+  ${sharedWrapper}
 `;
+
 const theme = createTheme({
   components: {
     MuiTextField: {
