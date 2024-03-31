@@ -42,7 +42,7 @@ export default function CreateTicket() {
         <Setlist ticketInfo={ticketInfo} />
       </FlexContainer>
       <Review setTicketInfo={setTicketInfo} />
-      <AddButton onClick={saveTicket}>Add Tickets</AddButton>
+      <AddButton onClick={saveTicket}>Add Ticket</AddButton>
     </Wrapper>
   );
 }
@@ -55,20 +55,30 @@ const Wrapper = styled.div`
   margin: 0 30px;
   overflow: auto;
   background: var(--light);
+
+  @media screen and (min-width: 1450px) {
+    display: grid;
+    grid-template-columns: 800px 1fr;
+  }
 `;
 
 const FlexContainer = styled.div`
   display: flex;
   gap: 30px;
+
+  @media screen and (min-width: 1450px) {
+    flex-direction: column;
+  }
 `;
 const AddButton = styled.button`
   width: 150px;
+  height: 50px;
   padding: 15px;
   font-weight: 600;
   border: none;
   border-radius: 50px;
   background-color: var(--accent);
-  color: var(--light);
+  color: #fff;
   font-size: 20px;
-  cursor: pointer;
+  margin-left: auto;
 `;

@@ -1,7 +1,9 @@
+import React, { useState } from "react";
 import { styled, css } from "styled-components";
 import MusicSearch from "./music-search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
 import { sharedWrapper } from "./sharedStyles";
+import { Drawer } from "@mui/material";
 const Wrapper = styled.div`
   ${sharedWrapper}
 `;
@@ -18,12 +20,20 @@ const AddTrack = styled.button`
   border: none;
 `;
 export default function Setlist() {
+  const [open, setOpen] = useState(false);
+
+  const toggleDrawer = (isOpen: boolean) => {
+    setOpen(isOpen);
+  };
   return (
     <Wrapper>
-      <AddTrack>
+      <AddTrack onClick={() => toggleDrawer(true)}>
         <LibraryMusicRoundedIcon />
         Add Track
       </AddTrack>
+      <Drawer open={open} onClose={() => toggleDrawer(false)}>
+        <MusicSearch />
+      </Drawer>
     </Wrapper>
   );
 }

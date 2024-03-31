@@ -12,6 +12,10 @@ import { sharedWrapper } from "./sharedStyles";
 
 const Wrapper = styled.div`
   ${sharedWrapper}
+  max-width: 500px;
+`;
+const Container = styled.div`
+  display: flex;
 `;
 
 const theme = createTheme({
@@ -19,7 +23,11 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          "& .MuiInputBase-root": { m: 1, borderRadius: "40px;" },
+          "& .MuiInputBase-root": {
+            m: 1,
+            borderRadius: "40px;",
+            height: "40px;",
+          },
           "& label.Mui-focused": {
             color: "#A0AAB4",
           },
@@ -27,6 +35,9 @@ const theme = createTheme({
             "&.Mui-focused fieldset": {
               borderColor: "var(--accent)",
             },
+          },
+          "& .MuiInputLabel-root:not(.Mui-focused)": {
+            top: "-7px;",
           },
         },
       },
@@ -83,31 +94,35 @@ export default function Details({ ticketInfo, setTicketInfo }) {
             value={ticketInfo.title}
             onChange={handleChange}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="DATE"
-              name="date"
-              views={["year", "month", "day"]}
-              onChange={handleDateChange}
+          <Container>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="DATE"
+                name="date"
+                views={["year", "month", "day"]}
+                onChange={handleDateChange}
+              />
+              <TimePicker
+                label="START TIME"
+                name="time"
+                onChange={handleTimeChange}
+              />
+            </LocalizationProvider>
+          </Container>
+          <Container>
+            <TextField
+              label="LOCATOIN"
+              name="location"
+              value={ticketInfo.location}
+              onChange={handleChange}
             />
-            <TimePicker
-              label="START TIME"
-              name="time"
-              onChange={handleTimeChange}
+            <TextField
+              label="SEAT"
+              name="seat"
+              value={ticketInfo.seat}
+              onChange={handleChange}
             />
-          </LocalizationProvider>
-          <TextField
-            label="LOCATOIN"
-            name="location"
-            value={ticketInfo.location}
-            onChange={handleChange}
-          />
-          <TextField
-            label="SEAT"
-            name="seat"
-            value={ticketInfo.seat}
-            onChange={handleChange}
-          />
+          </Container>
         </ThemeProvider>
       </Box>
     </Wrapper>
