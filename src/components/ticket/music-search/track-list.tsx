@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { List, Checkbox, ListItemButton, ListItemText } from "@mui/material";
 import styled from "styled-components";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { sharedButton } from "../sharedStyles";
 
 export default function TrackList({
   accessToken,
@@ -58,7 +60,7 @@ export default function TrackList({
   };
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <TrackContainer>
         <List>
           {tracklist.map((track, id) => (
@@ -77,9 +79,23 @@ export default function TrackList({
         </List>
       </TrackContainer>
       <Submit onClick={handleSave}>Submit</Submit>
-    </>
+    </ThemeProvider>
   );
 }
+
+const theme = createTheme({
+  components: {
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          "&.Mui-checked": {
+            color: "var(--accent)",
+          },
+        },
+      },
+    },
+  },
+});
 
 const TrackContainer = styled.div`
   display: flex;
@@ -98,12 +114,8 @@ const Submit = styled.button`
   left: 410px;
   top: 20px;
   width: 80px;
-  height: 40px;
-  font-size: 16px;
-  border-radius: 20px;
   padding: 6px;
   font-weight: 600;
-  color: #fff;
-  background-color: var(--primary-dark);
   border: none;
+  ${sharedButton}
 `;

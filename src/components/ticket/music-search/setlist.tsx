@@ -2,28 +2,23 @@ import React, { useState } from "react";
 import { styled, css } from "styled-components";
 import MusicSearch from "./music-search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
-import { sharedWrapper } from "../sharedStyles";
+import { sharedWrapper, sharedButton } from "../sharedStyles";
 import { Drawer } from "@mui/material";
 const Wrapper = styled.div`
   ${sharedWrapper}
 `;
 
 const AddTrack = styled.button`
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  border-radius: 20px;
-  padding: 6px;
-  font-weight: 600;
-  color: #fff;
-  background-color: var(--primary-dark);
-  border: none;
+  width: 140px;
+  padding: 10px;
+  ${sharedButton}
 `;
 
 const SetListContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 export default function Setlist() {
   const [open, setOpen] = useState(false);
   const [selectedTracks, setSelectedTracks] = useState([]);

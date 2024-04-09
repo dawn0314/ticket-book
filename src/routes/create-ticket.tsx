@@ -4,6 +4,7 @@ import Setlist from "../components/ticket/music-search/setlist";
 import AddPhoto from "../components/ticket/add-photo";
 import Details from "../components/ticket/details";
 import Review from "../components/ticket/review";
+import { sharedButton } from "../components/ticket/sharedStyles.ts";
 
 export interface TicketInfo {
   photo: File;
@@ -72,13 +73,17 @@ const FlexContainer = styled.div`
 `;
 const AddButton = styled.button`
   width: 150px;
-  height: 50px;
-  padding: 15px;
+  height: 50px !important;
+  padding: 12px !important;
   font-weight: 600;
   border: none;
-  border-radius: 50px;
-  background-color: var(--accent);
+  background-color: var(--accent) !important;
   color: #fff;
-  font-size: 20px;
   margin-left: auto;
+  ${sharedButton}
+  box-shadow: 0px 2px 7px #818181 !important;
+  &:active {
+    box-shadow: 0px 4px 8px #686662 !important;
+    transform: scale(0.98);
+  }
 `;
