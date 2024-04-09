@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { List } from "@mui/material";
+import { List, Checkbox, ListItemButton, ListItemText } from "@mui/material";
 import styled from "styled-components";
 
 export default function TrackList({
   accessToken,
   selectedAlbum,
-  selectedArtist,
+  onSaveSelectedTracks,
 }) {
-  const [result, setResult] = useState([]);
+  const [tracklist, setTracklist] = useState([]);
+  const [checked, setChecked] = useState([]);
 
-  const fetchAlbumData = async () => {
-    var albumParameters = {
+  useEffect(() => {
+    if (selectedAlbum) {
+      fetchTrackData();
+    }
+  }, [selectedAlbum]);
+
+  const fetchTrackData = async () => {
+    const trackParameters = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -18,51 +25,85 @@ export default function TrackList({
       },
     };
 
-    var albums = await fetch(
-      "https://api.spotify.com/v1/artists/" +
-        selectedArtist +
-        "/albums" +
-        "?include_groups=album&market=US&limit=50",
-      albumParameters
+    const tracks = await fetch(
+      "https://api.spotify.com/v1/albums/" +
+        selectedAlbum +
+        "/tracks" +
+        "?offset=0&limit=30&locale=ko",
+      trackParameters
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(selectedArtist);
-        setAlbumsList(data.items);
+        setTracklist(data.items);
       });
   };
 
-  useEffect(() => {
-    if (selectedAlbum) {
-      fetchTrackData(selectedAlbum);
-    }
-  }, [selectedAlbum]);
+  const handleToggle = (name: string, id: number) => () => {
+    const currentIndex = checked.indexOf(id);
+    const newChecked = [...checked];
 
-  const fetchTrackData = async (selectedAlbum) => {
-    try {
-      const response = await fetch(
-        `${baseURL}?method=album.getinfo&api_key=${APIKEY}&artist=${selectedArtist}&album=${selectedAlbum}&format=json`
-      );
-      const data = await response.json();
-      console.log(selectedAlbum);
-      console.log(selectedArtist);
-      setResult(data.album);
-      console.log("result: ", data.album);
-    } catch (error) {
-      console.log("TrackList Error: ", error);
+    if (currentIndex === -1) {
+      newChecked.push(id);
+    } else {
+      newChecked.splice(currentIndex, 1);
     }
+    setChecked(newChecked);
+  };
+
+  const handleSave = () => {
+    const trackName = checked.map((index) => {
+      return tracklist[index].name;
+    });
+    onSaveSelectedTracks(trackName);
   };
 
   return (
-    <TrackContainer>
-      {/* {tracks.map((result, id) => {
-        <List key={id}>{result.name}</List>;
-      })} */}
-    </TrackContainer>
+    <>
+      <TrackContainer>
+        <List>
+          {tracklist.map((track, id) => (
+            <Track>
+              <ListItemButton onClick={handleToggle(track.name, id)}>
+                <Checkbox
+                  edge="start"
+                  checked={checked.indexOf(id) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                />
+                <ListItemText key={track.id}>{track.name}</ListItemText>
+              </ListItemButton>
+            </Track>
+          ))}
+        </List>
+      </TrackContainer>
+      <Submit onClick={handleSave}>Submit</Submit>
+    </>
   );
 }
 
 const TrackContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 60px;
+  position: relative;
+`;
+
+const Track = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Submit = styled.button`
+  position: absolute;
+  left: 410px;
+  top: 20px;
+  width: 80px;
+  height: 40px;
+  font-size: 16px;
+  border-radius: 20px;
+  padding: 6px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--primary-dark);
+  border: none;
 `;

@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import styled from "styled-components";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  IconButton,
-} from "@mui/material";
+import { IconButton } from "@mui/material";
 import TrackList from "./track-list";
 import AlbumList from "./album-list";
-import axios from "axios";
 
-export default function MusicSearch() {
+export default function MusicSearch({ setSelectedTracks }) {
   const [input, setInput] = useState("");
   const [artistsList, setArtistsList] = useState([]);
   const [albumsList, setAlbumsList] = useState([]);
@@ -27,7 +20,7 @@ export default function MusicSearch() {
   useEffect(() => {
     if (selectedArtist) fetchAlbumData();
     // API Access Token
-    var authParameters = {
+    const authParameters = {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -44,14 +37,14 @@ export default function MusicSearch() {
   }, [selectedArtist]);
 
   async function search() {
-    var searchParameters = {
+    const searchParameters = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + accessToken,
       },
     };
-    var artistID = await fetch(
+    const artistID = await fetch(
       "https://api.spotify.com/v1/search?q=" + input + "&type=artist",
       searchParameters
     )
@@ -63,7 +56,7 @@ export default function MusicSearch() {
   }
 
   const fetchAlbumData = async () => {
-    var albumParameters = {
+    const albumParameters = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -71,16 +64,15 @@ export default function MusicSearch() {
       },
     };
 
-    var albums = await fetch(
+    const albums = await fetch(
       "https://api.spotify.com/v1/artists/" +
         selectedArtist +
         "/albums" +
-        "?include_groups=album&market=US&limit=50",
+        "?include_groups=album,single&market=US&limit=50",
       albumParameters
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(selectedArtist);
         setAlbumsList(data.items);
       });
   };
@@ -90,7 +82,7 @@ export default function MusicSearch() {
       <TrackList
         accessToken={accessToken}
         selectedAlbum={selectedAlbum}
-        selectedArtist={selectedArtist}
+        onSaveSelectedTracks={setSelectedTracks}
       />
     ) : (
       <AlbumList setSelectedAlbum={setSelectedAlbum} albumsList={albumsList} />

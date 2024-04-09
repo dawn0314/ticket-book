@@ -5,7 +5,7 @@ export default function AlbumList({ albumsList, setSelectedAlbum }) {
   return albumsList.map((result) => {
     const albumImg = result.images[0].url;
     const albumId = result.id;
-    console.log;
+    console.log(albumsList);
     return albumImg ? (
       <Card
         sx={{ width: 150, margin: "8px" }}

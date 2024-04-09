@@ -19,8 +19,14 @@ const AddTrack = styled.button`
   background-color: var(--primary-dark);
   border: none;
 `;
+
+const SetListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 export default function Setlist() {
   const [open, setOpen] = useState(false);
+  const [selectedTracks, setSelectedTracks] = useState([]);
 
   const toggleDrawer = (isOpen: boolean) => {
     setOpen(isOpen);
@@ -32,8 +38,13 @@ export default function Setlist() {
         Add Track
       </AddTrack>
       <Drawer open={open} onClose={() => toggleDrawer(false)}>
-        <MusicSearch />
+        <MusicSearch setSelectedTracks={setSelectedTracks} />
       </Drawer>
+      <SetListContainer>
+        {selectedTracks.map((track, id) => {
+          return <div key={id}>{track}</div>;
+        })}
+      </SetListContainer>
     </Wrapper>
   );
 }
