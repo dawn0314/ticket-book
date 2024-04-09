@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { styled, css } from "styled-components";
 import MusicSearch from "./music-search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
-import { sharedWrapper } from "./sharedStyles";
+import { sharedWrapper } from "../sharedStyles";
 import { Drawer } from "@mui/material";
 const Wrapper = styled.div`
   ${sharedWrapper}

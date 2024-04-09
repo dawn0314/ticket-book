@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Setlist from "../components/ticket/setlist";
+import Setlist from "../components/ticket/music-search/setlist";
 import AddPhoto from "../components/ticket/add-photo";
 import Details from "../components/ticket/details";
 import Review from "../components/ticket/review";
