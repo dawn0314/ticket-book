@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { List, Checkbox, ListItemButton, ListItemText } from "@mui/material";
+import {
+  List,
+  Checkbox,
+  ListItemButton,
+  ListItemText,
+  Alert,
+} from "@mui/material";
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { sharedButton } from "../sharedStyles";
@@ -7,16 +13,26 @@ import { sharedButton } from "../sharedStyles";
 export default function TrackList({
   accessToken,
   selectedAlbum,
+  selectedTracks,
   onSaveSelectedTracks,
 }) {
   const [tracklist, setTracklist] = useState([]);
   const [checked, setChecked] = useState([]);
+  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
     if (selectedAlbum) {
       fetchTrackData();
     }
-  }, [selectedAlbum]);
+
+    const timeId = setTimeout(() => {
+      setAlert(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [selectedAlbum, alert]);
 
   const fetchTrackData = async () => {
     const trackParameters = {
@@ -40,7 +56,7 @@ export default function TrackList({
       });
   };
 
-  const handleToggle = (name: string, id: number) => () => {
+  const handleToggle = (id: number) => () => {
     const currentIndex = checked.indexOf(id);
     const newChecked = [...checked];
 
@@ -56,7 +72,13 @@ export default function TrackList({
     const trackName = checked.map((index) => {
       return tracklist[index].name;
     });
-    onSaveSelectedTracks(trackName);
+
+    const updatedSelectedTracks = [...selectedTracks, ...trackName];
+    if (updatedSelectedTracks.length > 24) {
+      setAlert(true);
+    } else {
+      onSaveSelectedTracks(updatedSelectedTracks);
+    }
   };
 
   return (
@@ -65,7 +87,7 @@ export default function TrackList({
         <List>
           {tracklist.map((track, id) => (
             <Track>
-              <ListItemButton onClick={handleToggle(track.name, id)}>
+              <ListItemButton onClick={handleToggle(id)}>
                 <Checkbox
                   edge="start"
                   checked={checked.indexOf(id) !== -1}
@@ -78,6 +100,11 @@ export default function TrackList({
           ))}
         </List>
       </TrackContainer>
+      {alert && (
+        <Alert severity="error">
+          {`Your tracks must be less than 24. (Current selected tracks: ${selectedTracks.length})`}
+        </Alert>
+      )}
       <Submit onClick={handleSave}>Submit</Submit>
     </ThemeProvider>
   );
@@ -91,6 +118,14 @@ const theme = createTheme({
           "&.Mui-checked": {
             color: "var(--accent)",
           },
+        },
+      },
+    },
+
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          position: "absolute",
         },
       },
     },

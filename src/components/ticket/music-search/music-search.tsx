@@ -5,7 +5,7 @@ import { IconButton } from "@mui/material";
 import TrackList from "./track-list";
 import AlbumList from "./album-list";
 
-export default function MusicSearch({ setSelectedTracks }) {
+export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
   const [input, setInput] = useState("");
   const [artistsList, setArtistsList] = useState([]);
   const [albumsList, setAlbumsList] = useState([]);
@@ -50,7 +50,6 @@ export default function MusicSearch({ setSelectedTracks }) {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.artists.items);
         setArtistsList(data.artists.items);
       });
   }
@@ -82,6 +81,7 @@ export default function MusicSearch({ setSelectedTracks }) {
       <TrackList
         accessToken={accessToken}
         selectedAlbum={selectedAlbum}
+        selectedTracks={selectedTracks}
         onSaveSelectedTracks={setSelectedTracks}
       />
     ) : (
