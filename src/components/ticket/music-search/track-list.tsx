@@ -9,6 +9,7 @@ import {
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { sharedButton } from "../sharedStyles";
+import { v4 as uuidv4 } from "uuid";
 
 export default function TrackList({
   accessToken,
@@ -70,7 +71,10 @@ export default function TrackList({
 
   const handleSave = () => {
     const trackName = checked.map((index) => {
-      return tracklist[index].name;
+      return {
+        id: uuidv4(),
+        title: tracklist[index].name,
+      };
     });
 
     const updatedSelectedTracks = [...selectedTracks, ...trackName];
@@ -86,7 +90,7 @@ export default function TrackList({
       <TrackContainer>
         <List>
           {tracklist.map((track, id) => (
-            <Track>
+            <Track key={track.id}>
               <ListItemButton onClick={handleToggle(id)}>
                 <Checkbox
                   edge="start"
@@ -94,7 +98,7 @@ export default function TrackList({
                   tabIndex={-1}
                   disableRipple
                 />
-                <ListItemText key={track.id}>{track.name}</ListItemText>
+                <ListItemText>{track.name}</ListItemText>
               </ListItemButton>
             </Track>
           ))}

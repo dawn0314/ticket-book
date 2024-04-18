@@ -40,7 +40,7 @@ export default function CreateTicket() {
       <AddPhoto setTicketInfo={setTicketInfo} />
       <FlexContainer>
         <Details ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
-        <Setlist ticketInfo={ticketInfo} />
+        <Setlist ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
       </FlexContainer>
       <Review setTicketInfo={setTicketInfo} />
       <AddButton onClick={saveTicket}>Add Ticket</AddButton>

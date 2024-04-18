@@ -1,13 +1,27 @@
-import React, { useState, useRef, useEffect } from "react";
-import { styled, css } from "styled-components";
+import { useState, useEffect } from "react";
+import { styled } from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import MusicSearch from "./music-search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { sharedWrapper, sharedButton, sharedTitle } from "../sharedStyles";
 import { Drawer, Alert } from "@mui/material";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCorners,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
+import { Track } from "./track";
+import { v4 as uuidv4 } from "uuid";
 
 const theme = createTheme({
   components: {
@@ -22,23 +36,6 @@ const theme = createTheme({
   },
 });
 
-const styledTrack = css`
-  padding: 8px;
-  border-radius: 20px;
-  margin: 2px 2px;
-  max-width: 230px;
-  display: flex;
-  align-items: center;
-
-  &:hover {
-    background-color: #eee;
-  }
-
-  &:hover .drag-icon,
-  &:hover .remove-icon {
-    display: block !important;
-  }
-`;
 const Wrapper = styled.div`
   ${sharedWrapper}
   max-height: 600px;
@@ -105,33 +102,6 @@ const SetListContainer = styled.div`
   flex-basis: 50%;
 `;
 
-const Track = styled.div`
-  ${styledTrack}
-`;
-
-const CustomTrack = styled.div`
-  ${styledTrack}
-  &:hover {
-    background-color: #eee;
-  }
-`;
-
-const DragIcon = styled(DragIndicatorIcon)`
-  display: none !important;
-  font-size: 12px;
-  stroke: #eee;
-  stroke-width: 1;
-  margin-right: 2px;
-  cursor: pointer;
-`;
-
-const RemoveIcon = styled(RemoveCircleIcon)`
-  color: red;
-  display: none !important;
-  margin-left: auto;
-  cursor: pointer;
-`;
-
 const Title = styled.div`
   ${sharedTitle}
   align-items: center;
@@ -163,9 +133,37 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
     if (selectedTracks.length === 24) {
       setAlert(true);
     } else {
-      setSelectedTracks([...selectedTracks, customTrackInput]);
+      const newTrack = {
+        id: uuidv4(),
+        title: customTrackInput,
+      };
+      setSelectedTracks([...selectedTracks, newTrack]);
       setCustomTrackInput("");
+      console.log(selectedTracks);
     }
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const getTaskPosition = (id) =>
+    selectedTracks.findIndex((track) => track.id === id);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id === over.id) return;
+
+    setSelectedTracks((selectedTracks) => {
+      const originalPosition = getTaskPosition(active.id);
+      const newPosition = getTaskPosition(over.id);
+
+      return arrayMove(selectedTracks, originalPosition, newPosition);
+    });
   };
 
   return (
@@ -207,17 +205,24 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
             setSelectedTracks={setSelectedTracks}
           />
         </Drawer>
-        <SetListContainer>
-          {selectedTracks.map((track, id) => {
-            return (
-              <Track key={id}>
-                <DragIcon className="drag-icon" />
-                {track}
-                <RemoveIcon className="remove-icon" />
-              </Track>
-            );
-          })}
-        </SetListContainer>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragEnd={handleDragEnd}
+        >
+          <SetListContainer>
+            <SortableContext
+              items={selectedTracks}
+              strategy={verticalListSortingStrategy}
+            >
+              {selectedTracks.map((track) => {
+                return (
+                  <Track key={track.id} id={track.id} title={track.title} />
+                );
+              })}
+            </SortableContext>
+          </SetListContainer>
+        </DndContext>
       </Wrapper>
     </ThemeProvider>
   );
