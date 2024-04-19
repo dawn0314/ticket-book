@@ -4,6 +4,31 @@ import { styled, css } from "styled-components";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
+export const Track = ({ id, title, selectedTracks, setSelectedTracks }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
+
+  const handleDeleteTrack = (e) => {
+    e.stopPropagation();
+    console.log("id", id);
+    const updatedTracks = selectedTracks.filter((track) => track.id !== id);
+    setSelectedTracks(updatedTracks);
+  };
+
+  return (
+    <TrackItem ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <DragIcon className="drag-icon" />
+      {title}
+      <RemoveIcon className="remove-icon" onClick={handleDeleteTrack} />
+    </TrackItem>
+  );
+};
+
 const styledTrack = css`
   padding: 8px;
   border-radius: 20px;
@@ -26,13 +51,6 @@ const TrackItem = styled.div`
   ${styledTrack}
 `;
 
-// const CustomTrack = styled.div`
-//   ${styledTrack}
-//   &:hover {
-//     background-color: #eee;
-//   }
-// `;
-
 const DragIcon = styled(DragIndicatorIcon)`
   display: none !important;
   font-size: 12px;
@@ -48,20 +66,3 @@ const RemoveIcon = styled(RemoveCircleIcon)`
   margin-left: auto;
   cursor: pointer;
 `;
-export const Track = ({ id, title }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
-
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-  };
-
-  return (
-    <TrackItem ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <DragIcon className="drag-icon" />
-      {title}
-      <RemoveIcon className="remove-icon" />
-    </TrackItem>
-  );
-};

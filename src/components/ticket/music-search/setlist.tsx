@@ -144,7 +144,11 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
   };
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -217,7 +221,13 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
             >
               {selectedTracks.map((track) => {
                 return (
-                  <Track key={track.id} id={track.id} title={track.title} />
+                  <Track
+                    key={track.id}
+                    id={track.id}
+                    title={track.title}
+                    selectedTracks={selectedTracks}
+                    setSelectedTracks={setSelectedTracks}
+                  />
                 );
               })}
             </SortableContext>
