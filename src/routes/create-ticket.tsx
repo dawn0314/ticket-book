@@ -7,7 +7,8 @@ import Review from "../components/ticket/review";
 import { sharedButton } from "../components/ticket/sharedStyles.ts";
 
 export interface TicketInfo {
-  photo: File;
+  mainPhoto: number;
+  photo: File[];
   title: string;
   date: string;
   time: string;
@@ -19,7 +20,8 @@ export interface TicketInfo {
 export default function CreateTicket() {
   const [tickets, setTickets] = useState([]);
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
-    photo: null,
+    mainPhoto: 0,
+    photo: [],
     title: "",
     date: "",
     time: "",
@@ -30,7 +32,9 @@ export default function CreateTicket() {
   const saveTicket = () => {
     const newTicket = {};
     const updatedTickets = [...tickets, newTicket];
-
+    {
+      console.log(ticketInfo);
+    }
     setTickets(updatedTickets);
     localStorage.setItem("tickets", JSON.stringify(updatedTickets));
   };
@@ -68,6 +72,9 @@ const FlexContainer = styled.div`
   gap: 30px;
 
   @media screen and (min-width: 1450px) {
+    flex-direction: column;
+  }
+  @media screen and (max-width: 1150px) {
     flex-direction: column;
   }
 `;

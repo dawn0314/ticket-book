@@ -12,10 +12,22 @@ import { sharedWrapper } from "./sharedStyles";
 
 const Wrapper = styled.div`
   ${sharedWrapper}
-  max-width: 500px;
+  max-width: 550px;
+  min-width: 230px;
+  max-height: 210px;
+
+  @media screen and (max-width: 1150px) {
+    flex-direction: column;
+    max-height: 330px;
+  }
 `;
 const Container = styled.div`
   display: flex;
+  max-width: 450px;
+
+  @media screen and (max-width: 1150px) {
+    flex-direction: column;
+  }
 `;
 
 const theme = createTheme({
@@ -27,6 +39,8 @@ const theme = createTheme({
             m: 1,
             borderRadius: "40px;",
             height: "40px;",
+            marginBottom: "6px;",
+            maxWidth: "340px;",
           },
           "& label.Mui-focused": {
             color: "#A0AAB4",

@@ -14,8 +14,6 @@ export const Track = ({ id, title, selectedTracks, setSelectedTracks }) => {
   };
 
   const handleDeleteTrack = (e) => {
-    e.stopPropagation();
-    console.log("id", id);
     const updatedTracks = selectedTracks.filter((track) => track.id !== id);
     setSelectedTracks(updatedTracks);
   };

@@ -3,9 +3,13 @@ import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import Button from "@mui/material/Button";
 import { sharedWrapper, sharedTitle, sharedButton } from "./sharedStyles";
+import Checkbox from "@mui/material/Checkbox";
+import StarRoundedIcon from "@mui/icons-material/StarRounded";
+import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
 
 export default function AddPhoto({ setTicketInfo }) {
   const [selectedImages, setSelectedImages] = useState([]);
+  const [mainImgIndex, setMainImgIndex] = useState(0);
 
   const handlePhotoAdd = (e) => {
     const files = Array.from(e.target.files);
@@ -18,6 +22,14 @@ export default function AddPhoto({ setTicketInfo }) {
     setTicketInfo((prev) => ({
       ...prev,
       photo: selectedImages,
+    }));
+  };
+
+  const handleMainPhoto = (index) => {
+    setMainImgIndex(index);
+    setTicketInfo((prev) => ({
+      ...prev,
+      mainPhoto: index,
     }));
   };
 
@@ -39,7 +51,16 @@ export default function AddPhoto({ setTicketInfo }) {
       </Title>
       <PreviewContainer>
         {selectedImages.map((image, index) => (
-          <ImagePreview key={index} src={image} alt={`Preview ${index}`} />
+          <ImageContainer>
+            {mainImgIndex === index ? <MainImgText>Main</MainImgText> : null}
+            <ImagePreview
+              key={index}
+              src={image}
+              alt={`Preview ${index}`}
+              onClick={() => handleMainPhoto(index)}
+              mainImage={mainImgIndex === index}
+            />
+          </ImageContainer>
         ))}
       </PreviewContainer>
     </Wrapper>
@@ -75,9 +96,26 @@ const PreviewContainer = styled.div`
   scrollbar-width: thin;
   min-height: 30vh;
 `;
-const ImagePreview = styled.img`
-  max-width: 200px;
-  max-height: 200px;
+
+const ImageContainer = styled.div`
+  position: relative;
+  max-width: 240px;
+  max-height: 240px;
   margin: 5px;
+`;
+const ImagePreview = styled.img`
+  position: relative;
+  max-width: 240px;
+  max-height: 240px;
+  object-fit: fill;
   border-radius: 15px;
+  ${(props) => props.mainImage && `border: 4px solid #F4D03F;`}
+`;
+
+const MainImgText = styled.div`
+  position: absolute;
+  z-index: 1;
+  padding: 4px;
+  border-bottom-right-radius: 6px;
+  background-color: #f4d03f;
 `;
