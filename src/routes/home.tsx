@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <Wrapper>
       {viewCover && <Cover onClose={toggleCoverVisibility} />}
-      <NavLink to="/list">OPEN TICKETBOOK</NavLink>
+      <NavLink to="/ticket-list">OPEN TICKETBOOK</NavLink>
       <NavLink to="/create-ticket">ADD TICKET</NavLink>
     </Wrapper>
   );

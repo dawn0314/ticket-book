@@ -11,6 +11,13 @@ export default function AddPhoto({ setTicketInfo }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [mainImgIndex, setMainImgIndex] = useState(0);
 
+  useEffect(() => {
+    setTicketInfo((prev) => ({
+      ...prev,
+      photo: selectedImages,
+    }));
+  }, [selectedImages, setTicketInfo]);
+
   const handlePhotoAdd = (e) => {
     const files = Array.from(e.target.files);
     const imagesArray = files.map((file) => {
@@ -18,11 +25,6 @@ export default function AddPhoto({ setTicketInfo }) {
     });
 
     setSelectedImages((prevImages) => [...prevImages, ...imagesArray]);
-
-    setTicketInfo((prev) => ({
-      ...prev,
-      photo: selectedImages,
-    }));
   };
 
   const handleMainPhoto = (index) => {
@@ -69,6 +71,8 @@ export default function AddPhoto({ setTicketInfo }) {
 
 const Wrapper = styled.div`
   ${sharedWrapper}
+  max-height: 380px;
+  min-width: 500px;
 `;
 
 const Title = styled.div`
@@ -95,19 +99,19 @@ const PreviewContainer = styled.div`
   overflow-x: scroll;
   scrollbar-width: thin;
   min-height: 30vh;
+  margin: 12px 0;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
-  max-width: 240px;
-  max-height: 240px;
+
   margin: 5px;
 `;
 const ImagePreview = styled.img`
   position: relative;
-  max-width: 240px;
-  max-height: 240px;
-  object-fit: fill;
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
   border-radius: 15px;
   ${(props) => props.mainImage && `border: 4px solid #F4D03F;`}
 `;

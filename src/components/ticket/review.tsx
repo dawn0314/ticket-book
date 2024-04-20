@@ -4,11 +4,13 @@ import { sharedWrapper, sharedTitle } from "./sharedStyles";
 
 const Wrapper = styled.div`
   ${sharedWrapper}
-  min-height: 35vh;
+  min-height: 40vh;
+  min-width: 500px;
 `;
 
 const Textarea = styled.textarea`
   width: 100%;
+
   height: calc(100% - 20px);
   resize: none;
   padding: 12px 20px;

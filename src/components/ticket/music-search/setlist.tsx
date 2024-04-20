@@ -125,6 +125,13 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
     };
   }, [alert]);
 
+  useEffect(() => {
+    setTicketInfo((prev) => ({
+      ...prev,
+      selectedTracks,
+    }));
+  }, [selectedTracks, setTicketInfo]);
+
   const toggleDrawer = (isOpen: boolean) => {
     setOpen(isOpen);
   };

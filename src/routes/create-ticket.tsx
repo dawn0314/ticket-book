@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Setlist from "../components/ticket/music-search/setlist";
 import AddPhoto from "../components/ticket/add-photo";
@@ -7,6 +8,7 @@ import Review from "../components/ticket/review";
 import { sharedButton } from "../components/ticket/sharedStyles.ts";
 
 export interface TicketInfo {
+  id: number;
   mainPhoto: number;
   photo: File[];
   title: string;
@@ -20,6 +22,7 @@ export interface TicketInfo {
 export default function CreateTicket() {
   const [tickets, setTickets] = useState([]);
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
+    id: 0,
     mainPhoto: 0,
     photo: [],
     title: "",
@@ -29,24 +32,32 @@ export default function CreateTicket() {
     seat: "",
     review: "",
   });
+
+  const navigate = useNavigate();
+
   const saveTicket = () => {
-    const newTicket = {};
-    const updatedTickets = [...tickets, newTicket];
-    {
-      console.log(ticketInfo);
+    const confirm = window.confirm("Are you sure you want to save the ticket?");
+
+    if (confirm) {
+      const newTicket = { ...ticketInfo, id: tickets.length + 1 };
+      const updatedTickets = [...tickets, newTicket];
+
+      setTickets(updatedTickets);
+      localStorage.setItem("tickets", JSON.stringify(updatedTickets));
+      navigate("/ticket-list");
     }
-    setTickets(updatedTickets);
-    localStorage.setItem("tickets", JSON.stringify(updatedTickets));
   };
 
   return (
     <Wrapper>
-      <AddPhoto setTicketInfo={setTicketInfo} />
+      <FlexContainer>
+        <AddPhoto setTicketInfo={setTicketInfo} />
+        <Review setTicketInfo={setTicketInfo} />
+      </FlexContainer>
       <FlexContainer>
         <Details ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
         <Setlist ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
       </FlexContainer>
-      <Review setTicketInfo={setTicketInfo} />
       <AddButton onClick={saveTicket}>Add Ticket</AddButton>
     </Wrapper>
   );
