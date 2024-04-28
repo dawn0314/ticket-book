@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { createGlobalStyle, styled } from "styled-components";
 import reset from "styled-reset";
+import TicketList from "./routes/ticket-list";
 
 const GlobalStyles = createGlobalStyle`
   ${reset};
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/create-ticket",
     element: <CreateTicket />,
+  },
+  {
+    path: "/ticket-list",
+    element: <TicketList />,
   },
 ]);
 
