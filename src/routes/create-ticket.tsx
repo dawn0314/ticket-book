@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Setlist from "../components/ticket/music-search/setlist";
-import AddPhoto from "../components/ticket/add-photo";
-import Details from "../components/ticket/details";
-import Review from "../components/ticket/review";
-import { sharedButton } from "../components/ticket/sharedStyles.ts";
+import Setlist from "../components/form/music-search/setlist";
+import AddPhoto from "../components/form/add-photo";
+import Details from "../components/form/details";
+import Review from "../components/form/review";
+import { sharedButton } from "../components/form/sharedStyles.ts";
 
 export interface TicketInfo {
   id: number;
@@ -34,6 +34,13 @@ export default function CreateTicket() {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedTickets = localStorage.getItem("tickets");
+    if (storedTickets) {
+      setTickets(JSON.parse(storedTickets));
+    }
+  }, []);
 
   const saveTicket = () => {
     const confirm = window.confirm("Are you sure you want to save the ticket?");
