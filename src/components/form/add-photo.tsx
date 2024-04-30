@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import Button from "@mui/material/Button";
 import { sharedWrapper, sharedTitle, sharedButton } from "./sharedStyles";
-import Checkbox from "@mui/material/Checkbox";
-import StarRoundedIcon from "@mui/icons-material/StarRounded";
-import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
+import { Alert } from "@mui/material";
 
 export default function AddPhoto({ setTicketInfo }) {
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState<ImageData[]>([]);
   const [mainImgIndex, setMainImgIndex] = useState(0);
+  const [alert, setAlert] = useState(false);
+
+  const maxFileSize = 1024 * 1024;
 
   useEffect(() => {
     setTicketInfo((prev) => ({
       ...prev,
       photo: selectedImages,
     }));
-  }, [selectedImages, setTicketInfo]);
+
+    const timeId = setTimeout(() => {
+      setAlert(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [selectedImages, setTicketInfo, alert]);
 
   const handlePhotoAdd = (e) => {
     const files = Array.from(e.target.files);
     const imagesArray = files.map((file) => {
-      return URL.createObjectURL(file);
+      if (file.size > maxFileSize) {
+        setAlert(true);
+        return;
+      } else {
+        const reader = new FileReader(); // base64
+        reader.onload = () => {
+          setSelectedImages((prevImages) => [...prevImages, reader.result]);
+        };
+        reader.readAsDataURL(file);
+      }
     });
-
-    setSelectedImages((prevImages) => [...prevImages, ...imagesArray]);
   };
 
   const handleMainPhoto = (index) => {
@@ -39,6 +54,11 @@ export default function AddPhoto({ setTicketInfo }) {
     <Wrapper>
       <Title>
         Photo{" "}
+        {alert && (
+          <Alert severity="error">
+            {`Please add file that is 1MB or less`}
+          </Alert>
+        )}
         <PhotoUpload htmlFor="photo">
           <AddPhotoAlternateIcon />
           ADD PHOTO
