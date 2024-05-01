@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import MusicSearch from "./music-search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { sharedWrapper, sharedButton, sharedTitle } from "../sharedStyles";
+import { sharedWrapper, sharedButton, sharedTitle } from "../../sharedStyles";
 import { Drawer, Alert } from "@mui/material";
 import {
   DndContext,

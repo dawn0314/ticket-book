@@ -8,7 +8,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
-import { sharedWrapper } from "./sharedStyles";
+import { sharedWrapper } from "../sharedStyles";
 
 const Wrapper = styled.div`
   ${sharedWrapper}
@@ -59,14 +59,17 @@ const theme = createTheme({
   },
 });
 
-export default function Details({ ticketInfo, setTicketInfo }) {
+export default function DetailsForm({ ticketInfo, setTicketInfo }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const maxLength = name === "title" ? 30 : 12;
 
-    setTicketInfo((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (value.length <= maxLength) {
+      setTicketInfo((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleDateChange = (value) => {

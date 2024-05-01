@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { sharedButton } from "../sharedStyles";
+import { sharedButton } from "../../sharedStyles";
 import { v4 as uuidv4 } from "uuid";
 
 export default function TrackList({

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Setlist from "../components/form/music-search/setlist";
+import SetlistForm from "../components/form/music-search/setlist-form.tsx";
 import AddPhoto from "../components/form/add-photo";
-import Details from "../components/form/details";
-import Review from "../components/form/review";
-import { sharedButton } from "../components/form/sharedStyles.ts";
+import DetailsForm from "../components/form/details-form.tsx";
+import ReviewForm from "../components/form/review-form";
+import { sharedButton } from "../components/sharedStyles.ts";
 
 export interface TicketInfo {
   id: number;
   mainPhoto: number;
-  photo: File[];
+  photo: string[];
   title: string;
   date: string;
   time: string;
@@ -59,11 +59,11 @@ export default function CreateTicket() {
     <Wrapper>
       <FlexContainer>
         <AddPhoto setTicketInfo={setTicketInfo} />
-        <Review setTicketInfo={setTicketInfo} />
+        <ReviewForm setTicketInfo={setTicketInfo} />
       </FlexContainer>
       <FlexContainer>
-        <Details ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
-        <Setlist ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
+        <DetailsForm ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
+        <SetlistForm ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
       </FlexContainer>
       <AddButton onClick={saveTicket}>Add Ticket</AddButton>
     </Wrapper>

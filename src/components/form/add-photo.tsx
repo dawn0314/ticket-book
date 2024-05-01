@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import { sharedWrapper, sharedTitle, sharedButton } from "./sharedStyles";
+import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import { Alert } from "@mui/material";
 
 export default function AddPhoto({ setTicketInfo }) {
@@ -124,7 +124,6 @@ const PreviewContainer = styled.div`
 
 const ImageContainer = styled.div`
   position: relative;
-
   margin: 5px;
 `;
 const ImagePreview = styled.img`

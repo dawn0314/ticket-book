@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import styled from "styled-components";
-import { sharedWrapper, sharedTitle } from "./sharedStyles";
+import { sharedWrapper, sharedTitle } from "../sharedStyles";
 
 const Wrapper = styled.div`
   ${sharedWrapper}
@@ -26,7 +26,7 @@ const Title = styled.div`
   ${sharedTitle}
   padding-bottom: 10px;
 `;
-export default function Review({ setTicketInfo }) {
+export default function ReviewForm({ setTicketInfo }) {
   const handleChange = (e) => {
     const { value } = e.target;
     setTicketInfo((prev) => ({
