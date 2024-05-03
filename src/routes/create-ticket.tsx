@@ -16,6 +16,7 @@ export interface TicketInfo {
   time: string;
   location: string;
   seat: string;
+  selectedTracks: string[];
   review: string;
 }
 
@@ -30,6 +31,7 @@ export default function CreateTicket() {
     time: "",
     location: "",
     seat: "",
+    selectedTracks: [],
     review: "",
   });
 

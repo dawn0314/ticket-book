@@ -85,7 +85,9 @@ export default function DetailsForm({ ticketInfo, setTicketInfo }) {
 
   const handleTimeChange = (value) => {
     const time = new Date(value);
-    const stringTime = `${time.getHours()}:${time.getMinutes()}`;
+    const hours = String(time.getHours()).padStart(2, "0");
+    const minutes = String(time.getMinutes()).padStart(2, "0");
+    const stringTime = `${hours}:${minutes}`;
     setTicketInfo((prev) => ({
       ...prev,
       time: stringTime,
