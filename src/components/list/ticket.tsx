@@ -96,19 +96,17 @@ const TearOff = styled.div`
   position: relative;
 `;
 
-export default function Ticket() {
-  const [tickets, setTickets] = useState([]);
-
+export default function Ticket({ ticket }) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedTickets = localStorage.getItem("tickets");
-    if (storedTickets) {
-      setTickets(JSON.parse(storedTickets));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedTickets = localStorage.getItem("tickets");
+  //   if (storedTickets) {
+  //     setTickets(JSON.parse(storedTickets));
+  //   }
+  // }, []);
 
-  const renderSeat = (ticket) => {
+  const renderSeat = () => {
     const seats = ticket.seat.split(" ");
 
     return seats.map((seat, index) => {
@@ -120,8 +118,8 @@ export default function Ticket() {
     });
   };
 
-  return tickets.map((ticket, index) => (
-    <Wrapper key={index} onClick={() => navigate(`/ticket-list/${ticket.id}`)}>
+  return (
+    <Wrapper onClick={() => navigate(`/ticket-list/${ticket.id}`)}>
       <Image src={ticket.photo[ticket.mainPhoto]} />
       <Content>
         <Title>{ticket.title}</Title>
@@ -134,8 +132,8 @@ export default function Ticket() {
       <TearLine />
       <TearOff>
         <Barcode src={barcode} />
-        <Seat>{renderSeat(ticket)}</Seat>
+        <Seat>{renderSeat()}</Seat>
       </TearOff>
     </Wrapper>
-  ));
+  );
 }
