@@ -11,6 +11,7 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   font-size: 100px;
+  font-family: "Playfair Display";
   cursor: pointer;
   color: var(--accent);
   text-align: center;

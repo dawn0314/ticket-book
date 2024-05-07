@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+# Web Ticket Book
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![TicketBook](./public/logo.png)
 
-Currently, two official plugins are available:
+공연 티켓을 수집하고 정리할 수 있는 티켓북을 웹으로 구현한 프로젝트 입니다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Skill Stacks
 
-## Expanding the ESLint configuration
+- <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+- <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=black">
+- <img src="https://img.shields.io/badge/react-black?style=for-the-badge&logo=react&logoColor=61DAFB">
+- <img src="https://img.shields.io/badge/material ui-007FFF?style=for-the-badge&logo=mui&logoColor=black">
+- <img src="https://img.shields.io/badge/spotify-1DB954?style=for-the-badge&logo=spotify&logoColor=black">
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 시작하기
 
-- Configure the top-level `parserOptions` property like this:
+### local installation
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+$ git clone https://github.com/dawn0314/ticket-book.git
+$ cd repo
+$ npm install
+$ npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+http://localhost:3000 에서 실행됩니다.
+
+## 주요 기능
+
+### 티켓 추가
+
+- 사진을 첨부하고 메인 사진을 선택 가능
+- 공연에 대한 정보 입력 가능
+- 노래를 검색하여 공연 셋리스트 추가 가능
+- 리뷰 쓰기
+
+### 티켓 보기
+
+- localStorage에 저장된 티켓 모음
+- 티켓 클릭하여 디테일 볼 수 있음
