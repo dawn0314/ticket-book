@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
-import { Track } from "../form/music-search/track";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function TicketDetail() {
   const { id } = useParams();
@@ -89,6 +90,10 @@ export default function TicketDetail() {
         <Title>✏️ Review</Title>
         <Review>{ticket?.review}</Review>
       </ReviewContainer>
+      <NavLink to="/ticket-list">
+        <ArrowBackIcon />
+        Back to List
+      </NavLink>
     </Wrapper>
   );
 }
@@ -196,4 +201,11 @@ const Title = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+`;
+
+const NavLink = styled(Link)`
+  ${sharedButton}
+  width: 160px;
+  margin-left: auto;
+  text-decoration: none;
 `;

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Ticket from "../components/list/ticket";
 import styled from "styled-components";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Pagination from "../components/pagination";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import spring from "../assets/spring.png";
 
 export default function TicketList() {
   const [page, setPage] = useState(1);
@@ -24,18 +26,29 @@ export default function TicketList() {
     return tickets.slice(startIndex, endIndex);
   };
 
+  const displayedTickets = getDisplayedTickets();
+
   return (
     <Wrapper>
-      <NavLink to="/create-ticket">ADD TICKET</NavLink>
-      {getDisplayedTickets().map((ticket) => (
-        <Ticket key={ticket.id} ticket={ticket} />
-      ))}
+      {[
+        displayedTickets
+          .slice(0, 2)
+          .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),
+        <Spring src={spring} />,
+        displayedTickets
+          .slice(2)
+          .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),
+      ]}
       <Pagination
         totalPage={totalPage}
         limit={4}
         page={page}
         setPage={setPage}
       />
+      <NavLink to="/create-ticket">
+        <AddRoundedIcon className="add-icon" />
+        <Text>Add Ticket</Text>
+      </NavLink>
     </Wrapper>
   );
 }
@@ -51,16 +64,33 @@ const Wrapper = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  padding: 20px;
-  width: 140px;
-  text-align: center;
-  margin-left: auto;
-  text-decoration: none;
-  border-radius: 20px;
-  color: black;
+  display: flex;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  padding: 8px 0 0 8px;
   background: var(--accent);
-  transition: 0.25s;
+  border-radius: 50px;
+  color: black;
+  transition: all 0.25s ease;
+  width: 40px;
+  height: 40px;
+  text-decoration: none;
+  overflow: hidden;
+
   &:hover {
     color: white;
+    width: 130px;
   }
+`;
+
+const Text = styled.span`
+  text-align: center;
+  width: 200px;
+  margin: 4px 0 0 10px;
+  padding-right: 8px;
+`;
+
+const Spring = styled.img`
+  margin: 0 -100px;
 `;

@@ -74,9 +74,9 @@ export default function DetailsForm({ ticketInfo, setTicketInfo }) {
 
   const handleDateChange = (value) => {
     const date = new Date(value);
-    const stringDate = `${date.getFullYear()} ${
+    const stringDate = `${date.getFullYear()}. ${
       date.getMonth() + 1
-    } ${date.getDate()}`;
+    }. ${date.getDate()}`;
     setTicketInfo((prev) => ({
       ...prev,
       date: stringDate,

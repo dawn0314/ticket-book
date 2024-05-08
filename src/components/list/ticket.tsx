@@ -16,7 +16,7 @@ const tearShape = css`
 
 const Wrapper = styled.div`
   width: 720px;
-  min-height: 240px;
+  min-height: 300px;
   background-color: white;
   display: flex;
   justify-content: space-between;
@@ -30,7 +30,6 @@ const Content = styled.div`
 const Image = styled.img`
   width: 200px;
   height: 100%;
-  background-color: green;
   object-fit: cover;
   position: relative;
 `;
@@ -75,18 +74,18 @@ const TearLine = styled.div`
 const Seat = styled.div`
   display: flex;
   position: absolute;
-  top: 110px;
+  top: 140px;
   right: -10px;
   transform: rotate(-90deg);
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  gap: 20px;
   width: 170px;
   font-size: 18px;
 `;
 
 const Barcode = styled.img`
-  width: 200px;
-  margin: 95px 8px;
+  width: 240px;
+  margin: 125px -14px;
   transform: rotate(90deg);
 `;
 
@@ -98,13 +97,6 @@ const TearOff = styled.div`
 
 export default function Ticket({ ticket }) {
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const storedTickets = localStorage.getItem("tickets");
-  //   if (storedTickets) {
-  //     setTickets(JSON.parse(storedTickets));
-  //   }
-  // }, []);
 
   const renderSeat = () => {
     const seats = ticket.seat.split(" ");
@@ -124,7 +116,7 @@ export default function Ticket({ ticket }) {
       <Content>
         <Title>{ticket.title}</Title>
         <InfoContainer>
-          {ticket.date} {ticket.time}
+          {ticket.date} {ticket.date && ticket.time && " / "} {ticket.time}
           <br />
           {ticket.location ? `@ ${ticket.location}` : null}
         </InfoContainer>
