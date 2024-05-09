@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/pagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import spring from "../assets/spring.png";
+import type { TicketInfo } from "./create-ticket";
 
 export default function TicketList() {
   const [page, setPage] = useState(1);
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState<TicketInfo[]>([]);
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function TicketList() {
         displayedTickets
           .slice(0, 2)
           .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),
-        <Spring src={spring} />,
+        <Spring src={spring} key={1} />,
         displayedTickets
           .slice(2)
           .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),

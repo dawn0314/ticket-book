@@ -1,5 +1,9 @@
 import { styled } from "styled-components";
 
+interface CoverProps {
+  onClose: () => void;
+}
+
 const Wrapper = styled.div`
   width: 100%;
   position: absolute;
@@ -16,7 +20,8 @@ const Title = styled.div`
   color: var(--accent);
   text-align: center;
 `;
-export default function Cover({ onClose }) {
+
+export default function Cover({ onClose }: CoverProps) {
   const onTitleClick = () => {
     onClose();
   };

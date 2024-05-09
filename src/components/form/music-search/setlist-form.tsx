@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import MusicSearch from "./music-search";
@@ -22,92 +22,6 @@ import {
 } from "@dnd-kit/sortable";
 import { Track } from "./track";
 import { v4 as uuidv4 } from "uuid";
-
-const theme = createTheme({
-  components: {
-    MuiAlert: {
-      styleOverrides: {
-        root: {
-          position: "absolute",
-          zIndex: "1",
-        },
-      },
-    },
-  },
-});
-
-const Wrapper = styled.div`
-  ${sharedWrapper}
-  max-height: 600px;
-  min-width: 500px;
-`;
-
-const AddButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-  position: relative;
-  transition: all 1s;
-  height: 50px;
-  padding: 5px;
-  border: 4px solid white;
-  border-radius: 25px;
-`;
-
-const AddTextFieldContainer = styled.div`
-  position: relative;
-`;
-
-const AddIcon = styled(AddRoundedIcon)`
-  position: absolute;
-  right: 0;
-  top: 3px;
-  cursor: pointer;
-`;
-
-const Input = styled.input`
-  border-radius: 25px;
-  height: 40px;
-  width: 0;
-  padding: 12px;
-  transition: width 0.3s ease;
-  overflow: hidden;
-  border: none;
-  outline: none;
-
-  &:focus {
-    width: 200px;
-    background: #eee;
-  }
-
-  ${AddTextFieldContainer}:hover & {
-    width: 200px;
-    background: #eee;
-  }
-`;
-
-const AddTrack = styled.button`
-  width: 140px;
-  padding: 10px;
-  ${sharedButton}
-`;
-
-const SetListContainer = styled.div`
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
-  max-height: 450px;
-  flex-wrap: wrap;
-  flex-basis: 50%;
-`;
-
-const Title = styled.div`
-  ${sharedTitle}
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-`;
 
 export default function Setlist({ ticketInfo, setTicketInfo }) {
   const [open, setOpen] = useState(false);
@@ -146,7 +60,6 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
       };
       setSelectedTracks([...selectedTracks, newTrack]);
       setCustomTrackInput("");
-      console.log(selectedTracks);
     }
   };
 
@@ -244,3 +157,92 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
     </ThemeProvider>
   );
 }
+
+const theme = createTheme({
+  components: {
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          position: "absolute",
+          zIndex: "1",
+          top: "20%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        },
+      },
+    },
+  },
+});
+
+const Wrapper = styled.div`
+  ${sharedWrapper}
+  max-height: 600px;
+  min-width: 500px;
+`;
+
+const AddButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  position: relative;
+  transition: all 1s;
+  height: 50px;
+  padding: 5px;
+  border: 4px solid white;
+  border-radius: 25px;
+`;
+
+const AddTextFieldContainer = styled.div`
+  position: relative;
+`;
+
+const AddIcon = styled(AddRoundedIcon)`
+  position: absolute;
+  right: 0;
+  top: 3px;
+  cursor: pointer;
+`;
+
+const Input = styled.input`
+  border-radius: 25px;
+  height: 40px;
+  width: 0;
+  padding: 12px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  border: none;
+  outline: none;
+
+  &:focus {
+    width: 200px;
+    background: #eee;
+  }
+
+  ${AddTextFieldContainer}:hover & {
+    width: 200px;
+    background: #eee;
+  }
+`;
+
+const AddTrack = styled.button`
+  width: 140px;
+  padding: 10px;
+  ${sharedButton}
+`;
+
+const SetListContainer = styled.div`
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  max-height: 450px;
+  flex-wrap: wrap;
+  flex-basis: 50%;
+`;
+
+const Title = styled.div`
+  ${sharedTitle}
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+`;

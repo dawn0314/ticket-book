@@ -3,13 +3,43 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Modal, Backdrop, Fade } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import type { TicketInfo } from "../../routes/create-ticket";
+
+const theme = createTheme({
+  components: {
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          "&:hover": {
+            backgroundcolor: "red",
+          },
+        },
+      },
+    },
+  },
+});
 
 export default function TicketDetail() {
   const { id } = useParams();
-  const [ticket, setTicket] = useState();
+  const [ticket, setTicket] = useState<TicketInfo>();
+  const [open, setOpen] = useState(false);
+  const [image, setImage] = useState("false");
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleImage = (value) => {
+    setImage(value);
+    setOpen(true);
+  };
 
   const navigate = useNavigate();
 
@@ -20,7 +50,6 @@ export default function TicketDetail() {
       const foundTicket = tickets.find((t) => t.id === parseInt(id));
       if (foundTicket) {
         setTicket(foundTicket);
-        console.log(ticket);
       } else {
         console.log("Ticket not found");
       }
@@ -46,29 +75,43 @@ export default function TicketDetail() {
 
   return (
     <Wrapper>
-      <ButtonContainer>
-        <EditButton>Edit</EditButton>
-        <DeleteButton onClick={handleDelete}>
-          <DeleteOutlineOutlinedIcon />
-        </DeleteButton>
-      </ButtonContainer>
-      <PhotoWrapper>
-        <Title>📷 Memory</Title>
-        {/* {ticket?.photo.map((item, index) => (
-          <ImageContainer>
-            <ImagePreview src={item} key={index} />
-          </ImageContainer>
-        ))} */}
-        {ticket?.photo && (
+      <ThemeProvider theme={theme}>
+        <ButtonContainer>
+          <EditButton>Edit</EditButton>
+          <DeleteButton onClick={handleDelete}>
+            <DeleteOutlineOutlinedIcon />
+          </DeleteButton>
+        </ButtonContainer>
+        <PhotoWrapper>
+          <Title>📷 Memory</Title>
           <ImageGrid>
-            {ticket.photo.map((item, index) => (
+            {ticket?.photo.map((item, index) => (
               <ImageContainer key={index}>
-                <ImagePreview src={item} />
+                <ImagePreview src={item} onClick={() => handleImage(item)} />
               </ImageContainer>
             ))}
           </ImageGrid>
-        )}
-      </PhotoWrapper>
+        </PhotoWrapper>
+        <Modal open={open} onClose={handleClose} closeAfterTransition>
+          <Fade in={open} timeout={500}>
+            <img
+              src={image}
+              alt="asd"
+              style={{
+                maxHeight: "90%",
+                maxWidth: "90%",
+              }}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            />
+          </Fade>
+        </Modal>
+      </ThemeProvider>
+      <ReviewContainer>
+        <Title>✏️ Review</Title>
+        <Review>{ticket?.review}</Review>
+      </ReviewContainer>
       <FlexContainer>
         <InfoContainer>
           ✨ {ticket?.title}
@@ -80,16 +123,12 @@ export default function TicketDetail() {
         <SetlistContainer>
           <Title>🎵 Setlist</Title>
           <TrackContainer>
-            {ticket?.selectedTracks.map((track) => (
-              <TrackTitle>{track.title}</TrackTitle>
+            {ticket?.selectedTracks.map((track, i) => (
+              <TrackTitle key={i}>{track.title}</TrackTitle>
             ))}
           </TrackContainer>
         </SetlistContainer>
       </FlexContainer>
-      <ReviewContainer>
-        <Title>✏️ Review</Title>
-        <Review>{ticket?.review}</Review>
-      </ReviewContainer>
       <NavLink to="/ticket-list">
         <ArrowBackIcon />
         Back to List
@@ -113,6 +152,7 @@ const ButtonContainer = styled.div`
   gap: 10px;
   margin-left: auto;
 `;
+
 const EditButton = styled.button`
   ${sharedButton}
   width: 100px;
@@ -125,7 +165,6 @@ const DeleteButton = styled.button`
 
 const FlexContainer = styled.div`
   display: flex;
-  /* flex-direction: row; */
   align-items: flex-start;
   gap: 30px;
 `;
@@ -136,22 +175,19 @@ const PhotoWrapper = styled.div`
 `;
 
 const ImageGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
-  margin: 5px;
 `;
 
 const ImagePreview = styled.img`
   position: relative;
-  /* width: 240px; */
-  /* height: 240px; */
-  height: auto;
-  width: 100%;
+  width: 240px;
+  height: 240px;
   object-fit: cover;
   border-radius: 15px;
 `;
@@ -208,4 +244,5 @@ const NavLink = styled(Link)`
   width: 160px;
   margin-left: auto;
   text-decoration: none;
+  min-height: 40px;
 `;

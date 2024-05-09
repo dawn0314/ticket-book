@@ -21,6 +21,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  box-shadow: 4px 5px 5px #ddd;
 `;
 
 const Content = styled.div`

@@ -21,7 +21,7 @@ export interface TicketInfo {
 }
 
 export default function CreateTicket() {
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState<TicketInfo[]>([]);
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
     id: 0,
     mainPhoto: 0,
@@ -40,7 +40,7 @@ export default function CreateTicket() {
   useEffect(() => {
     const storedTickets = localStorage.getItem("tickets");
     if (storedTickets) {
-      setTickets(JSON.parse(storedTickets));
+      setTickets(JSON.parse(storedTickets) as TicketInfo[]);
     }
   }, []);
 
@@ -100,7 +100,7 @@ const FlexContainer = styled.div`
 `;
 const AddButton = styled.button`
   width: 150px;
-  height: 50px !important;
+  height: 45px !important;
   padding: 12px !important;
   font-weight: 600;
   border: none;
@@ -112,5 +112,8 @@ const AddButton = styled.button`
   &:active {
     box-shadow: 0px 4px 8px #686662 !important;
     transform: scale(0.98);
+  }
+  @media screen and (min-width: 1450px) {
+    margin-right: -530px;
   }
 `;

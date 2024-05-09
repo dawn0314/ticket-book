@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { styled, css } from "styled-components";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 
-export default function Pagination({ totalPage, limit, page, setPage }) {
-  const [currentPageArray, setCurrentPageArray] = useState([]);
-  const [totalPageArray, setTotalPageArray] = useState([]);
+interface PaginationProps {
+  totalPage: number;
+  limit: number;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+}
+export default function Pagination({
+  totalPage,
+  limit,
+  page,
+  setPage,
+}: PaginationProps) {
+  const [currentPageArray, setCurrentPageArray] = useState<number[]>([]);
+  const [totalPageArray, setTotalPageArray] = useState<number[][]>([]);
 
   useEffect(() => {
     const currentPageIndex = Math.floor((page - 1) / limit);
     setCurrentPageArray(totalPageArray[currentPageIndex]);
-  }, [page]);
+  }, [totalPageArray, page, limit]);
 
   useEffect(() => {
     const slicedPageArray = sliceArrayByLimit(totalPage, limit);
     setTotalPageArray(slicedPageArray);
     setCurrentPageArray(slicedPageArray[0]);
-  }, [totalPage]);
+  }, [totalPage, limit]);
 
-  const sliceArrayByLimit = (totalPage, limit) => {
+  const sliceArrayByLimit = (totalPage: number, limit: number) => {
     const totalPageArray = [...Array(totalPage).keys()];
     return Array.from({ length: Math.ceil(totalPage / limit) }, (_, i) =>
       totalPageArray.slice(i * limit, (i + 1) * limit)
@@ -32,7 +43,7 @@ export default function Pagination({ totalPage, limit, page, setPage }) {
         {currentPageArray?.map((i) => (
           <PageButton
             key={i + 1}
-            className={page === i + 1 && "active"}
+            active={page === i + 1}
             onClick={() => setPage(i + 1)}
             aria-current={page === i + 1 ? "page" : null}
           >
@@ -71,14 +82,16 @@ const PageButton = styled.div`
   &:hover {
     border: solid 1px var(--primary-dark);
   }
-  &.active {
-    width: 30px;
-    height: 30px;
-    background-color: var(--accent);
-    color: white;
-    font-weight: 700;
-    border: 0;
-  }
+  ${(props) =>
+    props.active &&
+    css`
+      width: 30px;
+      height: 30px;
+      background-color: var(--accent);
+      color: white;
+      font-weight: 700;
+      border: 0;
+    `}
 `;
 
 const LeftPageButton = styled(ArrowBackIosRoundedIcon)`

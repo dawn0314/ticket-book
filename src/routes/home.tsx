@@ -21,6 +21,7 @@ const NavLink = styled(Link)`
     color: white;
   }
 `;
+
 export default function Home() {
   const [viewCover, setViewCover] = useState(true);
   const toggleCoverVisibility = () => {

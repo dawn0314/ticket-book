@@ -1,14 +1,7 @@
 import Home from "./routes/home";
 import ErrorPage from "./error-page";
 import CreateTicket from "./routes/create-ticket";
-import { createRoot } from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-  Outlet,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createGlobalStyle, styled } from "styled-components";
 import reset from "styled-reset";
 import TicketList from "./routes/ticket-list";

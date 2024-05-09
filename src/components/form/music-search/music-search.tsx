@@ -209,5 +209,3 @@ const ResultContainer = styled.div`
   width: 100%;
   overflow-y: auto;
 `;
-
-const AlbumsList = styled.div``;

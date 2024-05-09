@@ -42,7 +42,7 @@ export default function AddPhoto({ setTicketInfo }) {
     });
   };
 
-  const handleMainPhoto = (index) => {
+  const handleMainPhoto = (index: number) => {
     setMainImgIndex(index);
     setTicketInfo((prev) => ({
       ...prev,
