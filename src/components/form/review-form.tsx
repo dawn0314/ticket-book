@@ -1,5 +1,26 @@
 import styled from "styled-components";
 import { sharedWrapper, sharedTitle } from "../sharedStyles";
+import type { TicketInfo } from "../../routes/create-ticket";
+
+interface ReviewFormProps {
+  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
+}
+
+export default function ReviewForm({ setTicketInfo }: ReviewFormProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+    setTicketInfo((prev) => ({
+      ...prev,
+      review: value,
+    }));
+  };
+  return (
+    <Wrapper>
+      <Title>REVIEW</Title>
+      <Textarea onChange={handleChange}></Textarea>
+    </Wrapper>
+  );
+}
 
 const Wrapper = styled.div`
   ${sharedWrapper}
@@ -25,18 +46,3 @@ const Title = styled.div`
   ${sharedTitle}
   padding-bottom: 10px;
 `;
-export default function ReviewForm({ setTicketInfo }) {
-  const handleChange = (e) => {
-    const { value } = e.target;
-    setTicketInfo((prev) => ({
-      ...prev,
-      review: value,
-    }));
-  };
-  return (
-    <Wrapper>
-      <Title>REVIEW</Title>
-      <Textarea onChange={handleChange}></Textarea>
-    </Wrapper>
-  );
-}

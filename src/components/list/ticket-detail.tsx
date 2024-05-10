@@ -4,8 +4,7 @@ import { useParams } from "react-router-dom";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useNavigate, Link } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Modal, Backdrop, Fade } from "@mui/material";
+import { createTheme, ThemeProvider, Modal, Fade } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import type { TicketInfo } from "../../routes/create-ticket";
 
@@ -36,7 +35,7 @@ export default function TicketDetail() {
     setOpen(false);
   };
 
-  const handleImage = (value) => {
+  const handleImage = (value: string) => {
     setImage(value);
     setOpen(true);
   };
@@ -100,9 +99,6 @@ export default function TicketDetail() {
               style={{
                 maxHeight: "90%",
                 maxWidth: "90%",
-              }}
-              BackdropProps={{
-                timeout: 500,
               }}
             />
           </Fade>

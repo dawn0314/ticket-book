@@ -3,9 +3,14 @@ import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import { Alert } from "@mui/material";
+import type { TicketInfo } from "../../routes/create-ticket";
 
-export default function AddPhoto({ setTicketInfo }) {
-  const [selectedImages, setSelectedImages] = useState<ImageData[]>([]);
+interface AddPhotoProps {
+  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
+}
+
+export default function AddPhoto({ setTicketInfo }: AddPhotoProps) {
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [mainImgIndex, setMainImgIndex] = useState(0);
   const [alert, setAlert] = useState(false);
 
@@ -26,16 +31,19 @@ export default function AddPhoto({ setTicketInfo }) {
     };
   }, [selectedImages, setTicketInfo, alert]);
 
-  const handlePhotoAdd = (e) => {
-    const files = Array.from(e.target.files);
-    const imagesArray = files.map((file) => {
+  const handlePhotoAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files as FileList);
+    files.map((file) => {
       if (file.size > maxFileSize) {
         setAlert(true);
         return;
       } else {
         const reader = new FileReader(); // base64
         reader.onload = () => {
-          setSelectedImages((prevImages) => [...prevImages, reader.result]);
+          setSelectedImages((prevImages) => [
+            ...prevImages,
+            reader.result as string,
+          ]);
         };
         reader.readAsDataURL(file);
       }

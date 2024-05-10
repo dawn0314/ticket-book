@@ -2,6 +2,45 @@ import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import barcode from "../../assets/barcode.png";
 import { useNavigate } from "react-router-dom";
+import type { TicketInfo } from "../../routes/create-ticket";
+
+type TicketProps = {
+  ticket: TicketInfo;
+};
+export default function Ticket({ ticket }: TicketProps) {
+  const navigate = useNavigate();
+
+  const renderSeat = () => {
+    const seats = ticket.seat.split(" ");
+
+    return seats.map((seat: string, index: number) => {
+      return (
+        <div key={index} className="seat">
+          {seat}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <Wrapper onClick={() => navigate(`/ticket-list/${ticket.id}`)}>
+      <Image src={ticket.photo[ticket.mainPhoto]} />
+      <Content>
+        <Title>{ticket.title}</Title>
+        <InfoContainer>
+          {ticket.date} {ticket.date && ticket.time && " / "} {ticket.time}
+          <br />
+          {ticket.location ? `@ ${ticket.location}` : null}
+        </InfoContainer>
+      </Content>
+      <TearLine />
+      <TearOff>
+        <Barcode src={barcode} />
+        <Seat>{renderSeat()}</Seat>
+      </TearOff>
+    </Wrapper>
+  );
+}
 
 const tearShape = css`
   content: "";
@@ -46,7 +85,6 @@ const Title = styled.div`
   max-height: 70px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  /* white-space: normal; */
   white-space: pre-wrap;
   word-wrap: break-word;
   display: inline-block;
@@ -95,38 +133,3 @@ const TearOff = styled.div`
   height: 100%;
   position: relative;
 `;
-
-export default function Ticket({ ticket }) {
-  const navigate = useNavigate();
-
-  const renderSeat = () => {
-    const seats = ticket.seat.split(" ");
-
-    return seats.map((seat, index) => {
-      return (
-        <div key={index} className="seat">
-          {seat}
-        </div>
-      );
-    });
-  };
-
-  return (
-    <Wrapper onClick={() => navigate(`/ticket-list/${ticket.id}`)}>
-      <Image src={ticket.photo[ticket.mainPhoto]} />
-      <Content>
-        <Title>{ticket.title}</Title>
-        <InfoContainer>
-          {ticket.date} {ticket.date && ticket.time && " / "} {ticket.time}
-          <br />
-          {ticket.location ? `@ ${ticket.location}` : null}
-        </InfoContainer>
-      </Content>
-      <TearLine />
-      <TearOff>
-        <Barcode src={barcode} />
-        <Seat>{renderSeat()}</Seat>
-      </TearOff>
-    </Wrapper>
-  );
-}

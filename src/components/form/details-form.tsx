@@ -1,6 +1,5 @@
-import { Box, TextField } from "@mui/material";
+import { createTheme, ThemeProvider, Box, TextField } from "@mui/material";
 import styled from "styled-components";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   DatePicker,
   LocalizationProvider,
@@ -8,6 +7,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { sharedWrapper } from "../sharedStyles";
+import type { TicketInfo } from "../../routes/create-ticket";
 
 const Wrapper = styled.div`
   ${sharedWrapper}
@@ -58,7 +58,15 @@ const theme = createTheme({
   },
 });
 
-export default function DetailsForm({ ticketInfo, setTicketInfo }) {
+interface DetailsFormProps {
+  ticketInfo: TicketInfo;
+  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
+}
+
+export default function DetailsForm({
+  ticketInfo,
+  setTicketInfo,
+}: DetailsFormProps) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const maxLength = name === "title" ? 30 : 12;
@@ -71,26 +79,30 @@ export default function DetailsForm({ ticketInfo, setTicketInfo }) {
     }
   };
 
-  const handleDateChange = (value) => {
-    const date = new Date(value);
-    const stringDate = `${date.getFullYear()}. ${
-      date.getMonth() + 1
-    }. ${date.getDate()}`;
-    setTicketInfo((prev) => ({
-      ...prev,
-      date: stringDate,
-    }));
+  const handleDateChange = (value: Date | null) => {
+    if (value !== null) {
+      const date = new Date(value);
+      const stringDate = `${date.getFullYear()}. ${
+        date.getMonth() + 1
+      }. ${date.getDate()}`;
+      setTicketInfo((prev) => ({
+        ...prev,
+        date: stringDate,
+      }));
+    }
   };
 
-  const handleTimeChange = (value) => {
-    const time = new Date(value);
-    const hours = String(time.getHours()).padStart(2, "0");
-    const minutes = String(time.getMinutes()).padStart(2, "0");
-    const stringTime = `${hours}:${minutes}`;
-    setTicketInfo((prev) => ({
-      ...prev,
-      time: stringTime,
-    }));
+  const handleTimeChange = (value: Date | null) => {
+    if (value !== null) {
+      const time = new Date(value);
+      const hours = String(time.getHours()).padStart(2, "0");
+      const minutes = String(time.getMinutes()).padStart(2, "0");
+      const stringTime = `${hours}:${minutes}`;
+      setTicketInfo((prev) => ({
+        ...prev,
+        time: stringTime,
+      }));
+    }
   };
 
   return (
