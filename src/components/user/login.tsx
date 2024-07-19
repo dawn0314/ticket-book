@@ -43,7 +43,7 @@ export default function Login() {
 
   return (
     <Wrapper>
-      <Title>Log into Ticket Book</Title>
+      <Title>로그인</Title>
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
@@ -61,12 +61,16 @@ export default function Login() {
           type="password"
           required
         />
-        <Input type="submit" value={isLoading ? "Loading..." : "Log in"} />
+        <Input
+          submit
+          type="submit"
+          value={isLoading ? "Loading..." : "Log in"}
+        />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
-        Don't have an account?{" "}
-        <Link to="/create-account">Create one &rarr;</Link>
+        아직 계정이 없으신가요?{" "}
+        <Link to="/create-account">가입하기 &rarr;</Link>
       </Switcher>
     </Wrapper>
   );
@@ -85,7 +89,7 @@ const Title = styled.h1`
 `;
 
 const Form = styled.form`
-  margin-top: 50px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -104,6 +108,7 @@ const Input = styled.input`
       opacity: 0.8;
     }
   }
+  margin-top: ${(props) => (props.submit ? "12px" : "")};
 `;
 
 const Error = styled.span`

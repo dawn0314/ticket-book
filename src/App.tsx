@@ -6,6 +6,64 @@ import { createGlobalStyle, styled } from "styled-components";
 import reset from "styled-reset";
 import TicketList from "./routes/ticket-list";
 import TicketDetail from "./components/list/ticket-detail";
+import CreateAccount from "./components/user/create-account";
+import { useState } from "react";
+import { auth } from "./firebase";
+import ProtectedRoute from "./components/protected-route";
+import Login from "./components/user/login";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+    errorElement: <ErrorPage />,
+  },
+
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/create-account",
+    element: <CreateAccount />,
+  },
+  {
+    path: "/create-ticket",
+    element: (
+      <ProtectedRoute>
+        <CreateTicket />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/ticket-list",
+    element: (
+      <ProtectedRoute>
+        <TicketList />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/ticket-list/:id",
+    element: <TicketDetail />,
+  },
+]);
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const init = async () => {
+    await auth.authStateReady();
+    setIsLoading(false);
+  };
+
+  return (
+    <Wrapper>
+      <GlobalStyles />
+      <RouterProvider router={router} />
+    </Wrapper>
+  );
+}
 
 const GlobalStyles = createGlobalStyle`
   ${reset};
@@ -41,33 +99,5 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/create-ticket",
-    element: <CreateTicket />,
-  },
-  {
-    path: "/ticket-list",
-    element: <TicketList />,
-  },
-  {
-    path: "/ticket-list/:id",
-    element: <TicketDetail />,
-  },
-]);
-
-function App() {
-  return (
-    <Wrapper>
-      <GlobalStyles />
-      <RouterProvider router={router} />
-    </Wrapper>
-  );
-}
 
 export default App;
