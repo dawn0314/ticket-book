@@ -71,8 +71,9 @@ const GlobalStyles = createGlobalStyle`
   :root {
     --primary-dark: #333333;
     --accent:#cba135;
-    --beige:#e7d590;
+    --beige:rgb(231, 213, 144);
     --light:#f4f1ec;
+    --light-200:#E7DDCF ;
   }
   * {
     margin: 0;

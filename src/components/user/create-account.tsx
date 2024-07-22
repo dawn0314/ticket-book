@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { sharedButton, sharedWrapper } from "../sharedStyles";
-import googleLogo from "../../assets/google-logo.png";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { sharedWrapper } from "../sharedStyles";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import GoogleButton from "./google-button";
 
 export default function CreateAccount() {
   const navigate = useNavigate();
@@ -14,16 +13,6 @@ export default function CreateAccount() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const onClick = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -95,10 +84,7 @@ export default function CreateAccount() {
         />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
-      <Button onClick={onClick}>
-        <Logo src={googleLogo} />
-        Continue with Google
-      </Button>
+      <GoogleButton />
     </Wrapper>
   );
 }
@@ -116,20 +102,6 @@ const Title = styled.div`
   font-size: 20px;
 `;
 
-const Button = styled.span`
-  ${sharedButton}
-  gap: 10px;
-  margin-top: 10px;
-  width: 240px;
-  height: 2.5rem;
-  background-color: var(--accent);
-  cursor: pointer;
-`;
-
-const Logo = styled.img`
-  width: 30px;
-`;
-
 const Form = styled.form`
   margin-top: 50px;
   display: flex;
@@ -143,7 +115,7 @@ const Input = styled.input`
   padding: 10px 20px;
   border-radius: 50px;
   border: none;
-  width: ${(props) => (props.submit ? "240px" : "100%")};
+  width: 100%;
   font-size: 16px;
   &[type="submit"] {
     cursor: pointer;

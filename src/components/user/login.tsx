@@ -4,6 +4,7 @@ import { auth } from "../../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import GoogleButton from "./google-button";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ export default function Login() {
         아직 계정이 없으신가요?{" "}
         <Link to="/create-account">가입하기 &rarr;</Link>
       </Switcher>
+      <GoogleButton />
     </Wrapper>
   );
 }
@@ -80,6 +82,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 300px;
 `;
 
 const Title = styled.h1`
