@@ -6,6 +6,7 @@ import Pagination from "../components/pagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import spring from "../assets/spring.png";
 import type { TicketInfo } from "./create-ticket";
+import UserButton from "../components/user/user-button";
 
 export default function TicketList() {
   const [page, setPage] = useState(1);
@@ -50,6 +51,7 @@ export default function TicketList() {
         <AddRoundedIcon className="add-icon" />
         <Text>Add Ticket</Text>
       </NavLink>
+      <UserButton />
     </Wrapper>
   );
 }
@@ -66,9 +68,10 @@ const Wrapper = styled.div`
 
 const NavLink = styled(Link)`
   display: flex;
+  z-index: 1;
   position: absolute;
   bottom: 30px;
-  right: 30px;
+  right: 80px;
   padding: 8px 0 0 8px;
   background: var(--accent);
   border-radius: 50px;

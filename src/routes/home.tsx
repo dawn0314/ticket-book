@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Cover from "../components/cover";
 import { useEffect, useState } from "react";
 import { auth } from "../firebase";
+import tickets from "../assets/tickets.png";
 
 export default function Home() {
   const [viewCover, setViewCover] = useState(true);
@@ -49,11 +50,18 @@ export default function Home() {
           </ButtonWrapper>
         </div>
       ) : (
-        <ButtonWrapper>
-          <NavLink to="/login">로그인</NavLink>
-          <NavLink to="/create-account">티켓북 가입하기</NavLink>
-        </ButtonWrapper>
+        <div>
+          <Title>
+            기억에 남는 공연 <br /> 추억이 되는 기록
+          </Title>
+          <Subtitle>당신의 소중한 추억을 이곳에 기록해 보세요</Subtitle>
+          <ButtonWrapper>
+            <NavLink to="/login">로그인</NavLink>
+            <NavLink to="/create-account">티켓북 가입하기</NavLink>
+          </ButtonWrapper>
+        </div>
       )}
+      <TicketsImage src={tickets} />
     </Wrapper>
   );
 }
@@ -62,13 +70,13 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 80px;
 `;
 
 const NavLink = styled(Link)`
   padding: 20px;
   text-decoration: none;
-  border-radius: 20px;
+  border-radius: 40px;
   color: black;
   background: var(--accent);
   transition: 0.25s;
@@ -80,12 +88,24 @@ const NavLink = styled(Link)`
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 10px;
+  margin: 40px 0;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
   color: #fff;
-  font-size: 24px;
-  text-align: center;
-  margin: 40px 0;
+  font-size: 40px;
+  text-align: left;
   line-height: normal;
+  font-weight: bold;
+`;
+
+const Subtitle = styled.h3`
+  color: #fff;
+  margin-top: 20px;
+  text-align: left;
+`;
+
+const TicketsImage = styled.img`
+  width: 300px;
 `;

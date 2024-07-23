@@ -6,6 +6,7 @@ import AddPhoto from "../components/form/add-photo";
 import DetailsForm from "../components/form/details-form.tsx";
 import ReviewForm from "../components/form/review-form";
 import { sharedButton } from "../components/sharedStyles.ts";
+import UserButton from "../components/user/user-button.tsx";
 
 export interface TicketInfo {
   id: number;
@@ -68,6 +69,7 @@ export default function CreateTicket() {
         <SetlistForm ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
       </FlexContainer>
       <AddButton onClick={saveTicket}>Add Ticket</AddButton>
+      <UserButton />
     </Wrapper>
   );
 }
