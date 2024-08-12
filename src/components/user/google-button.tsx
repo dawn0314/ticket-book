@@ -65,7 +65,6 @@ const Button = styled.span`
 
   &:hover {
     background-color: var(--light-200);
-
     color: black;
   }
 `;

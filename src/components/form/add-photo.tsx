@@ -7,20 +7,24 @@ import type { TicketInfo } from "../../routes/create-ticket";
 
 interface AddPhotoProps {
   setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
+  setFiles: (files: File[]) => void;
 }
 
-export default function AddPhoto({ setTicketInfo }: AddPhotoProps) {
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
+  const [files, setLocalFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [mainImgIndex, setMainImgIndex] = useState(0);
   const [alert, setAlert] = useState(false);
 
-  const maxFileSize = 1024 * 1024;
+  const maxFileSize = 4 * 1024 * 1024;
 
   useEffect(() => {
-    setTicketInfo((prev) => ({
-      ...prev,
-      photo: selectedImages,
-    }));
+    // setTicketInfo((prev) => ({
+    //   ...prev,
+    //   photo: files,
+    // }));
+
+    setFiles(files);
 
     const timeId = setTimeout(() => {
       setAlert(false);
@@ -29,25 +33,27 @@ export default function AddPhoto({ setTicketInfo }: AddPhotoProps) {
     return () => {
       clearTimeout(timeId);
     };
-  }, [selectedImages, setTicketInfo, alert]);
+  }, [files, setFiles, alert]);
 
-  const handlePhotoAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files as FileList);
-    files.map((file) => {
-      if (file.size > maxFileSize) {
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files;
+    if (selectedFiles) {
+      const validFiles = Array.from(selectedFiles).filter(
+        (file) => file.size <= maxFileSize
+      );
+      const invalidFiles = Array.from(selectedFiles).filter(
+        (file) => file.size > maxFileSize
+      );
+
+      if (invalidFiles.length > 0) {
         setAlert(true);
-        return;
-      } else {
-        const reader = new FileReader(); // base64
-        reader.onload = () => {
-          setSelectedImages((prevImages) => [
-            ...prevImages,
-            reader.result as string,
-          ]);
-        };
-        reader.readAsDataURL(file);
       }
-    });
+
+      setLocalFiles((prevFiles) => [...prevFiles, ...validFiles]);
+
+      const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
+      setPreviewUrls((prevPreviews) => [...prevPreviews, ...newPreviews]);
+    }
   };
 
   const handleMainPhoto = (index: number) => {
@@ -63,16 +69,14 @@ export default function AddPhoto({ setTicketInfo }: AddPhotoProps) {
       <Title>
         Photo{" "}
         {alert && (
-          <Alert severity="error">
-            {`Please add file that is 1MB or less`}
-          </Alert>
+          <Alert severity="error">{`4MB이하의 이미지를 첨부해주세요.`}</Alert>
         )}
         <PhotoUpload htmlFor="photo">
           <AddPhotoAlternateIcon />
           ADD PHOTO
         </PhotoUpload>
         <PhotoInput
-          onChange={handlePhotoAdd}
+          onChange={onFileChange}
           id="photo"
           type="file"
           accept="image/*"
@@ -80,12 +84,12 @@ export default function AddPhoto({ setTicketInfo }: AddPhotoProps) {
         />
       </Title>
       <PreviewContainer>
-        {selectedImages.map((image, index) => (
+        {previewUrls.map((url, index) => (
           <ImageContainer>
             {mainImgIndex === index ? <MainImgText>Main</MainImgText> : null}
             <ImagePreview
               key={index}
-              src={image}
+              src={url}
               alt={`Preview ${index}`}
               onClick={() => handleMainPhoto(index)}
               mainImage={mainImgIndex === index}

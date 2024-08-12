@@ -7,6 +7,9 @@ import DetailsForm from "../components/form/details-form.tsx";
 import ReviewForm from "../components/form/review-form";
 import { sharedButton } from "../components/sharedStyles.ts";
 import UserButton from "../components/user/user-button.tsx";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { auth, db, storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export interface TicketInfo {
   id: number;
@@ -23,6 +26,7 @@ export interface TicketInfo {
 
 export default function CreateTicket() {
   const [tickets, setTickets] = useState<TicketInfo[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
     id: 0,
     mainPhoto: 0,
@@ -38,22 +42,35 @@ export default function CreateTicket() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedTickets = localStorage.getItem("tickets");
-    if (storedTickets) {
-      setTickets(JSON.parse(storedTickets) as TicketInfo[]);
-    }
-  }, []);
-
-  const saveTicket = () => {
-    const confirm = window.confirm("Are you sure you want to save the ticket?");
+  const onSaveTicket = async () => {
+    const user = auth.currentUser;
+    const confirm = window.confirm("티켓을 저장하시겠습니까?");
 
     if (confirm) {
-      const newTicket = { ...ticketInfo, id: tickets.length + 1 };
-      const updatedTickets = [...tickets, newTicket];
+      const doc = await addDoc(collection(db, "tickets"), {
+        ticketInfo,
+        createAt: Date.now(),
+        username: user?.displayName || "Anonymous",
+        userId: user?.uid,
+      });
 
-      setTickets(updatedTickets);
-      localStorage.setItem("tickets", JSON.stringify(updatedTickets));
+      console.log(ticketInfo);
+      if (files.length > 0) {
+        const uploadPromise = files.map(async (file, index) => {
+          const locationRef = ref(
+            storage,
+            `tickets/${user?.uid}-${user?.displayName}/${doc.id}/${index}`
+          );
+          const result = await uploadBytes(locationRef, file);
+          return getDownloadURL(result.ref);
+        });
+
+        const photoUrls = await Promise.all(uploadPromise);
+        await updateDoc(doc, {
+          photo: photoUrls,
+        });
+      }
+      console.log(ticketInfo);
       navigate("/ticket-list");
     }
   };
@@ -61,14 +78,14 @@ export default function CreateTicket() {
   return (
     <Wrapper>
       <FlexContainer>
-        <AddPhoto setTicketInfo={setTicketInfo} />
+        <AddPhoto setTicketInfo={setTicketInfo} setFiles={setFiles} />
         <ReviewForm setTicketInfo={setTicketInfo} />
       </FlexContainer>
       <FlexContainer>
         <DetailsForm ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
         <SetlistForm ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
       </FlexContainer>
-      <AddButton onClick={saveTicket}>Add Ticket</AddButton>
+      <AddButton onClick={onSaveTicket}>Add Ticket</AddButton>
       <UserButton />
     </Wrapper>
   );
