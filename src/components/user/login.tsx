@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { auth } from "../../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserLocalPersistence,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import GoogleButton from "./google-button";
 
 export default function Login() {
@@ -31,6 +35,7 @@ export default function Login() {
     if (isLoading || email === "" || password === "") return;
     try {
       setLoading(true);
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
     } catch (e) {

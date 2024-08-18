@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Home from "./routes/home";
 import ErrorPage from "./error-page";
 import CreateTicket from "./routes/create-ticket";
@@ -7,7 +8,6 @@ import reset from "styled-reset";
 import TicketList from "./routes/ticket-list";
 import TicketDetail from "./components/list/ticket-detail";
 import CreateAccount from "./components/user/create-account";
-import { useState } from "react";
 import { auth } from "./firebase";
 import ProtectedRoute from "./components/protected-route";
 import Login from "./components/user/login";
@@ -18,7 +18,6 @@ const router = createBrowserRouter([
     element: <Home />,
     errorElement: <ErrorPage />,
   },
-
   {
     path: "/login",
     element: <Login />,
@@ -45,17 +44,35 @@ const router = createBrowserRouter([
   },
   {
     path: "/ticket-list/:id",
-    element: <TicketDetail />,
+    element: (
+      <ProtectedRoute>
+        <TicketDetail />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
-  const init = async () => {
-    await auth.authStateReady();
-    setIsLoading(false);
-  };
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    });
+
+    // 컴포넌트가 언마운트 될 때 리스너를 정리
+    return () => unsubscribe();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Wrapper>
