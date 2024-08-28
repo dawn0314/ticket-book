@@ -12,7 +12,7 @@ import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export interface TicketInfo {
-  id: number;
+  id: string;
   mainPhoto: number;
   photo: string[];
   title: string;
@@ -28,7 +28,7 @@ export default function CreateTicket() {
   const [tickets, setTickets] = useState<TicketInfo[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
-    id: 0,
+    id: "",
     mainPhoto: 0,
     photo: [],
     title: "",
@@ -54,12 +54,11 @@ export default function CreateTicket() {
         userId: user?.uid,
       });
 
-      console.log(ticketInfo);
       if (files.length > 0) {
         const uploadPromise = files.map(async (file, index) => {
           const locationRef = ref(
             storage,
-            `tickets/${user?.uid}-${user?.displayName}/${doc.id}/${index}`
+            `tickets/${user?.uid}/${doc.id}/${index}`
           );
           const result = await uploadBytes(locationRef, file);
           return getDownloadURL(result.ref);
@@ -70,7 +69,6 @@ export default function CreateTicket() {
           photo: photoUrls,
         });
       }
-      console.log(ticketInfo);
       navigate("/ticket-list");
     }
   };

@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import barcode from "../../assets/barcode.png";
 import { useNavigate } from "react-router-dom";
@@ -7,11 +6,15 @@ import type { TicketInfo } from "../../routes/create-ticket";
 type TicketProps = {
   ticket: TicketInfo;
 };
+
 export default function Ticket({ ticket }: TicketProps) {
   const navigate = useNavigate();
 
+  const { ticketInfo, photo, id } = ticket;
+  const { title, date, time, location, mainPhoto } = ticketInfo;
+
   const renderSeat = () => {
-    const seats = ticket.seat.split(" ");
+    const seats = ticket.ticketInfo.seat.split(" ");
 
     return seats.map((seat: string, index: number) => {
       return (
@@ -23,14 +26,14 @@ export default function Ticket({ ticket }: TicketProps) {
   };
 
   return (
-    <Wrapper onClick={() => navigate(`/ticket-list/${ticket.id}`)}>
-      <Image src={ticket.photo[ticket.mainPhoto]} />
+    <Wrapper onClick={() => navigate(`/ticket-list/${id}`)}>
+      <Image src={photo[mainPhoto]} />
       <Content>
-        <Title>{ticket.title}</Title>
+        <Title>{title}</Title>
         <InfoContainer>
-          {ticket.date} {ticket.date && ticket.time && " / "} {ticket.time}
+          {date} {date && time && " / "} {time}
           <br />
-          {ticket.location ? `@ ${ticket.location}` : null}
+          {location ? `@ ${location}` : null}
         </InfoContainer>
       </Content>
       <TearLine />

@@ -7,6 +7,8 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import spring from "../assets/spring.png";
 import type { TicketInfo } from "./create-ticket";
 import UserButton from "../components/user/user-button";
+import { auth, db } from "../firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 export default function TicketList() {
   const [page, setPage] = useState(1);
@@ -14,13 +16,30 @@ export default function TicketList() {
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    const storedTickets = localStorage.getItem("tickets");
-    if (storedTickets) {
-      const parsedTickets = JSON.parse(storedTickets);
-      setTickets(parsedTickets);
-      setTotalPage(Math.ceil(parsedTickets.length / 4));
-    }
+    fetchTickets();
   }, []);
+
+  const fetchTickets = async () => {
+    const user = auth.currentUser;
+
+    if (user) {
+      const ticketQuery = query(
+        collection(db, "tickets"),
+        where("userId", "==", user.uid)
+      );
+      const snapshot = await getDocs(ticketQuery);
+      const userTickets = snapshot.docs.map((doc) => {
+        const data = doc.data() as TicketInfo;
+        return {
+          id: doc.id,
+          ...data,
+        };
+      });
+
+      setTickets(userTickets);
+      setTotalPage(Math.ceil(userTickets.length / 4));
+    }
+  };
 
   const getDisplayedTickets = () => {
     const startIndex = (page - 1) * 4;

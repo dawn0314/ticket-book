@@ -7,6 +7,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { createTheme, ThemeProvider, Modal, Fade } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import type { TicketInfo } from "../../routes/create-ticket";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
+import { auth, db, storage } from "../../firebase";
+import { deleteObject, ref } from "firebase/storage";
 
 const theme = createTheme({
   components: {
@@ -27,9 +30,39 @@ const theme = createTheme({
 
 export default function TicketDetail() {
   const { id } = useParams();
-  const [ticket, setTicket] = useState<TicketInfo>();
+  const [ticket, setTicket] = useState<
+    { ticketInfo?: TicketInfo; photo: string[] } | undefined
+  >(undefined);
+
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("false");
+
+  const navigate = useNavigate();
+  const ticketInfo = ticket?.ticketInfo;
+  const photo = ticket?.photo || [];
+
+  useEffect(() => {
+    const fetchTicket = async () => {
+      if (id) {
+        try {
+          const ticketDoc = doc(db, "tickets", id);
+          const ticketSnapshot = await getDoc(ticketDoc);
+          if (ticketSnapshot.exists()) {
+            const data = ticketSnapshot.data() as {
+              ticketInfo: TicketInfo;
+              photo: string[];
+            };
+            setTicket({ id: ticketSnapshot.id, ...data });
+          } else {
+            console.log("티켓을 찾을 수 없습니다.");
+          }
+        } catch (error) {
+          console.error("Error fetching ticket: ", error);
+        }
+      }
+    };
+    fetchTicket();
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -40,36 +73,24 @@ export default function TicketDetail() {
     setOpen(true);
   };
 
-  const navigate = useNavigate();
+  const handleDelete = async () => {
+    const user = auth.currentUser;
 
-  useEffect(() => {
-    const storedTickets = localStorage.getItem("tickets");
-    if (storedTickets) {
-      const tickets = JSON.parse(storedTickets);
-      const foundTicket = tickets.find((t) => t.id === parseInt(id));
-      if (foundTicket) {
-        setTicket(foundTicket);
-      } else {
-        console.log("Ticket not found");
+    const confirmDelete = window.confirm("티켓을 삭제하시겠습니까?");
+    if (!confirmDelete || user?.uid !== ticket?.userId) return;
+    try {
+      await deleteDoc(doc(db, "tickets", id));
+      if (photo) {
+        const photoRefs = photo.map((photoUrl) => {
+          const photoRef = ref(storage, photoUrl);
+          return deleteObject(photoRef);
+        });
+        await Promise.all(photoRefs);
       }
-    } else {
-      console.log("No tickets found in localStorage");
+    } catch (e) {
+      console.log(e);
     }
-  }, [id]);
-
-  const handleDelete = () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to remove the ticket?"
-    );
-    if (confirmDelete) {
-      const storedTickets = localStorage.getItem("tickets");
-      if (storedTickets) {
-        let tickets = JSON.parse(storedTickets);
-        const updatedTickets = tickets.filter((t) => t.id !== parseInt(id));
-        localStorage.setItem("tickets", JSON.stringify(updatedTickets));
-      }
-      navigate("/ticket-list");
-    }
+    navigate("/ticket-list");
   };
 
   return (
@@ -84,7 +105,7 @@ export default function TicketDetail() {
         <PhotoWrapper>
           <Title>📷 Memory</Title>
           <ImageGrid>
-            {ticket?.photo.map((item, index) => (
+            {photo.map((item, index) => (
               <ImageContainer key={index}>
                 <ImagePreview src={item} onClick={() => handleImage(item)} />
               </ImageContainer>
@@ -106,20 +127,20 @@ export default function TicketDetail() {
       </ThemeProvider>
       <ReviewContainer>
         <Title>✏️ Review</Title>
-        <Review>{ticket?.review}</Review>
+        <Review>{ticketInfo?.review}</Review>
       </ReviewContainer>
       <FlexContainer>
         <InfoContainer>
-          ✨ {ticket?.title}
+          ✨ {ticketInfo?.title}
           <br />
-          📆 {ticket?.date} {ticket?.time}
+          📆 {ticketInfo?.date} {ticketInfo?.time}
           <br />
-          📍 {ticket?.location} {ticket?.seat}
+          📍 {ticketInfo?.location} {ticketInfo?.seat}
         </InfoContainer>
         <SetlistContainer>
           <Title>🎵 Setlist</Title>
           <TrackContainer>
-            {ticket?.selectedTracks.map((track, i) => (
+            {ticketInfo?.selectedTracks.map((track, i) => (
               <TrackTitle key={i}>{track.title}</TrackTitle>
             ))}
           </TrackContainer>
