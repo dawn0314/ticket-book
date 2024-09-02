@@ -80,7 +80,7 @@ export default function TicketDetail() {
     const confirmDelete = window.confirm("티켓을 삭제하시겠습니까?");
     if (!confirmDelete || user?.uid !== ticket?.userId) return;
     try {
-      await deleteDoc(doc(db, "tickets", id));
+      await deleteDoc(doc(db, "users", user?.uid, "tickets", id));
       if (photo) {
         const photoRefs = photo.map((photoUrl) => {
           const photoRef = ref(storage, photoUrl);
@@ -208,6 +208,11 @@ const ImagePreview = styled.img`
   height: 240px;
   object-fit: cover;
   border-radius: 15px;
+
+  &:hover {
+    filter: brightness(0.9);
+    cursor: pointer;
+  }
 `;
 
 const InfoContainer = styled.div`

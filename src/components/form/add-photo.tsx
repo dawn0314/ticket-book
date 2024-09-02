@@ -187,7 +187,7 @@ const MainImgText = styled.div`
 const DeleteButton = styled(DeleteForeverIcon)`
   display: none !important;
   box-sizing: content-box;
-  padding: 10px;
+  padding: 8px;
   position: absolute;
   top: 10px;
   right: 10px;

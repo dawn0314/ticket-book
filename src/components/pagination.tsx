@@ -80,7 +80,7 @@ const PageButton = styled.div`
   height: 30px;
 
   &:hover {
-    border: solid 1px var(--primary-dark);
+    border: solid 2px var(--primary-dark);
   }
   ${(props) =>
     props.active &&
