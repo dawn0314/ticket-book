@@ -4,6 +4,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import { Alert } from "@mui/material";
 import type { TicketInfo } from "../../routes/create-ticket";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface AddPhotoProps {
   setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
@@ -62,6 +63,30 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
       ...prev,
       mainPhoto: index,
     }));
+
+    console.log(mainImgIndex);
+  };
+
+  const handleDeletePhoto = (index: number) => {
+    const updatedFiles = files.filter((_, i) => i !== index);
+    const updatedPreviews = previewUrls.filter((_, i) => i !== index);
+
+    setLocalFiles(updatedFiles);
+    setPreviewUrls(updatedPreviews);
+
+    if (mainImgIndex === index && updatedFiles.length > 0) {
+      setMainImgIndex(0);
+      setTicketInfo((prev) => ({
+        ...prev,
+        mainPhoto: 0,
+      }));
+    } else if (mainImgIndex === index) {
+      setMainImgIndex(-1);
+      setTicketInfo((prev) => ({
+        ...prev,
+        mainPhoto: -1,
+      }));
+    }
   };
 
   return (
@@ -94,6 +119,7 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
               onClick={() => handleMainPhoto(index)}
               mainImage={mainImgIndex === index}
             />
+            <DeleteButton onClick={() => handleDeletePhoto(index)} />
           </ImageContainer>
         ))}
       </PreviewContainer>
@@ -137,6 +163,9 @@ const PreviewContainer = styled.div`
 const ImageContainer = styled.div`
   position: relative;
   margin: 5px;
+  &:hover > svg {
+    display: block !important;
+  }
 `;
 const ImagePreview = styled.img`
   position: relative;
@@ -153,4 +182,21 @@ const MainImgText = styled.div`
   padding: 4px;
   border-bottom-right-radius: 6px;
   background-color: #f4d03f;
+`;
+
+const DeleteButton = styled(DeleteForeverIcon)`
+  display: none !important;
+  box-sizing: content-box;
+  padding: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  border-radius: 50%;
+  z-index: 1;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--light);
+  }
 `;

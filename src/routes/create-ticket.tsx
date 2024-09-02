@@ -12,7 +12,6 @@ import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export interface TicketInfo {
-  id: string;
   mainPhoto: number;
   photo: string[];
   title: string;
@@ -28,7 +27,6 @@ export default function CreateTicket() {
   const [tickets, setTickets] = useState<TicketInfo[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
-    id: "",
     mainPhoto: 0,
     photo: [],
     title: "",
@@ -46,8 +44,8 @@ export default function CreateTicket() {
     const user = auth.currentUser;
     const confirm = window.confirm("티켓을 저장하시겠습니까?");
 
-    if (confirm) {
-      const doc = await addDoc(collection(db, "tickets"), {
+    if (confirm && user) {
+      const doc = await addDoc(collection(db, "users", user.uid, "tickets"), {
         ticketInfo,
         createAt: Date.now(),
         username: user?.displayName || "Anonymous",
@@ -58,7 +56,7 @@ export default function CreateTicket() {
         const uploadPromise = files.map(async (file, index) => {
           const locationRef = ref(
             storage,
-            `tickets/${user?.uid}/${doc.id}/${index}`
+            `tickets/${user?.uid}-${user?.displayName}/${doc.id}/${index}`
           );
           const result = await uploadBytes(locationRef, file);
           return getDownloadURL(result.ref);

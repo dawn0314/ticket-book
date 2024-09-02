@@ -37,15 +37,16 @@ export default function TicketDetail() {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("false");
 
+  const user = auth.currentUser;
   const navigate = useNavigate();
   const ticketInfo = ticket?.ticketInfo;
   const photo = ticket?.photo || [];
 
   useEffect(() => {
     const fetchTicket = async () => {
-      if (id) {
+      if (id && user) {
         try {
-          const ticketDoc = doc(db, "tickets", id);
+          const ticketDoc = doc(db, "users", user.uid, "tickets", id);
           const ticketSnapshot = await getDoc(ticketDoc);
           if (ticketSnapshot.exists()) {
             const data = ticketSnapshot.data() as {

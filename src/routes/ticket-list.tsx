@@ -24,7 +24,7 @@ export default function TicketList() {
 
     if (user) {
       const ticketQuery = query(
-        collection(db, "tickets"),
+        collection(db, "users", user.uid, "tickets"),
         where("userId", "==", user.uid)
       );
       const snapshot = await getDocs(ticketQuery);
