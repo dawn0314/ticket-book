@@ -47,7 +47,7 @@ export default function CreateTicket() {
     if (confirm && user) {
       const doc = await addDoc(collection(db, "users", user.uid, "tickets"), {
         ticketInfo,
-        createAt: Date.now(),
+        createdAt: Date.now(),
         username: user?.displayName || "Anonymous",
         userId: user?.uid,
       });

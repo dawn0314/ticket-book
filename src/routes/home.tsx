@@ -20,7 +20,7 @@ export default function Home() {
     };
 
     checkAuth();
-  }, []);
+  }, [isAuthenticated]);
 
   const toggleCoverVisibility = () => {
     setViewCover(!viewCover);

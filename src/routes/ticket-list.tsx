@@ -8,7 +8,7 @@ import spring from "../assets/spring.png";
 import type { TicketInfo } from "./create-ticket";
 import UserButton from "../components/user/user-button";
 import { auth, db } from "../firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
 export default function TicketList() {
   const [page, setPage] = useState(1);
