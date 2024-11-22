@@ -46,7 +46,7 @@ export default function Home() {
           <ButtonWrapper>
             <NavLink to="/ticket-list">티켓북 열기</NavLink>
             <NavLink to="/create-ticket">티켓 추가하기</NavLink>
-            <button onClick={logOut}>Log Out</button>
+            <Logout onClick={logOut}>Log Out</Logout>
           </ButtonWrapper>
         </div>
       ) : (
@@ -108,4 +108,14 @@ const Subtitle = styled.h3`
 
 const TicketsImage = styled.img`
   width: 300px;
+`;
+
+const Logout = styled.button`
+  background-color: transparent;
+  color: #fff;
+  text-decoration: underline;
+  position: absolute;
+  border: none;
+  right: 10px;
+  bottom: 10px;
 `;
