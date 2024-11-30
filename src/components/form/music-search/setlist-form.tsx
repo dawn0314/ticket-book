@@ -20,14 +20,20 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import { Track } from "./track";
+import Track from "./track";
 import { v4 as uuidv4 } from "uuid";
+import { TicketInfoType } from "../../../types/ticket";
+import { TrackType } from "../../../types/music";
 
-export default function Setlist({ ticketInfo, setTicketInfo }) {
-  const [open, setOpen] = useState(false);
-  const [selectedTracks, setSelectedTracks] = useState([]);
-  const [customTrackInput, setCustomTrackInput] = useState("");
-  const [alert, setAlert] = useState(false);
+interface SetListProps {
+  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
+}
+
+export default function Setlist({ setTicketInfo }: SetListProps) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedTracks, setSelectedTracks] = useState<TrackType[]>([]);
+  const [customTrackInput, setCustomTrackInput] = useState<string>("");
+  const [alert, setAlert] = useState<boolean>(false);
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -50,7 +56,11 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
     setOpen(isOpen);
   };
 
-  const addCustomTrack = (selectedTracks, customTrackInput) => {
+  const addCustomTrack = (
+    selectedTracks: TrackType[],
+    customTrackInput: string
+  ) => {
+    console.log(selectedTracks);
     if (selectedTracks.length === 24) {
       setAlert(true);
     } else {
@@ -74,11 +84,11 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
     })
   );
 
-  const getTaskPosition = (id) =>
+  const getTaskPosition = (id: string) =>
     selectedTracks.findIndex((track) => track.id === id);
 
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
+  const handleDragEnd = (e) => {
+    const { active, over } = e;
 
     if (active.id === over.id) return;
 
@@ -110,7 +120,10 @@ export default function Setlist({ ticketInfo, setTicketInfo }) {
                   setCustomTrackInput(e.target.value);
                 }}
                 onKeyDown={(e) => {
-                  if (e.key == "Enter" && e.target.value) {
+                  if (
+                    e.key == "Enter" &&
+                    (e.target as HTMLInputElement).value
+                  ) {
                     addCustomTrack(selectedTracks, customTrackInput);
                   }
                 }}

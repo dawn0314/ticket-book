@@ -6,10 +6,10 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { useNavigate, Link } from "react-router-dom";
 import { createTheme, ThemeProvider, Modal, Fade } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import type { TicketInfo } from "../../routes/create-ticket";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { auth, db, storage } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
+import { ExtendedTicketInfoType, TicketInfoType } from "../../types/ticket";
 
 const theme = createTheme({
   components: {
@@ -29,10 +29,10 @@ const theme = createTheme({
 });
 
 export default function TicketDetail() {
-  const { id } = useParams();
-  const [ticket, setTicket] = useState<
-    { ticketInfo?: TicketInfo; photo: string[] } | undefined
-  >(undefined);
+  const { id } = useParams<{ id: string }>();
+  const [ticket, setTicket] = useState<ExtendedTicketInfoType | undefined>(
+    undefined
+  );
 
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("false");
@@ -50,7 +50,7 @@ export default function TicketDetail() {
           const ticketSnapshot = await getDoc(ticketDoc);
           if (ticketSnapshot.exists()) {
             const data = ticketSnapshot.data() as {
-              ticketInfo: TicketInfo;
+              ticketInfo: TicketInfoType;
               photo: string[];
             };
             setTicket({ id: ticketSnapshot.id, ...data });
@@ -80,7 +80,7 @@ export default function TicketDetail() {
     const confirmDelete = window.confirm("티켓을 삭제하시겠습니까?");
     if (!confirmDelete || user?.uid !== ticket?.userId) return;
     try {
-      await deleteDoc(doc(db, "users", user?.uid, "tickets", id));
+      await deleteDoc(doc(db, "users", user?.uid ?? "", "tickets", id!));
       if (photo) {
         const photoRefs = photo.map((photoUrl) => {
           const photoRef = ref(storage, photoUrl);

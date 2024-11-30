@@ -7,67 +7,18 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { sharedWrapper } from "../sharedStyles";
-import type { TicketInfo } from "../../routes/create-ticket";
-
-const Wrapper = styled.div`
-  ${sharedWrapper}
-  max-width: 550px;
-  min-width: 230px;
-  max-height: 210px;
-
-  @media screen and (max-width: 1150px) {
-    flex-direction: column;
-    max-height: 330px;
-  }
-`;
-const Container = styled.div`
-  display: flex;
-  max-width: 450px;
-
-  @media screen and (max-width: 1150px) {
-    flex-direction: column;
-  }
-`;
-
-const theme = createTheme({
-  components: {
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          "& .MuiInputBase-root": {
-            m: 1,
-            borderRadius: "40px;",
-            height: "40px;",
-            marginBottom: "6px;",
-            maxWidth: "340px;",
-          },
-          "& label.Mui-focused": {
-            color: "#A0AAB4",
-          },
-          "& .MuiOutlinedInput-root": {
-            "&.Mui-focused fieldset": {
-              borderColor: "var(--accent)",
-            },
-          },
-          "& .MuiInputLabel-root:not(.Mui-focused)": {
-            top: "-7px;",
-          },
-        },
-      },
-    },
-  },
-});
+import { TicketInfoType } from "../../types/ticket";
 
 interface DetailsFormProps {
-  ticketInfo: TicketInfo;
-  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
+  ticketInfo: TicketInfoType;
+  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
 }
 
 export default function DetailsForm({
   ticketInfo,
   setTicketInfo,
 }: DetailsFormProps) {
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const maxLength = name === "title" ? 30 : 12;
 
@@ -158,3 +109,52 @@ export default function DetailsForm({
     </Wrapper>
   );
 }
+
+const theme = createTheme({
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputBase-root": {
+            m: 1,
+            borderRadius: "40px;",
+            height: "40px;",
+            marginBottom: "6px;",
+            maxWidth: "340px;",
+          },
+          "& label.Mui-focused": {
+            color: "#A0AAB4",
+          },
+          "& .MuiOutlinedInput-root": {
+            "&.Mui-focused fieldset": {
+              borderColor: "var(--accent)",
+            },
+          },
+          "& .MuiInputLabel-root:not(.Mui-focused)": {
+            top: "-7px;",
+          },
+        },
+      },
+    },
+  },
+});
+
+const Wrapper = styled.div`
+  ${sharedWrapper};
+  max-width: 550px;
+  min-width: 230px;
+  max-height: 210px;
+
+  @media screen and (max-width: 1150px) {
+    flex-direction: column;
+    max-height: 330px;
+  }
+`;
+const Container = styled.div`
+  display: flex;
+  max-width: 450px;
+
+  @media screen and (max-width: 1150px) {
+    flex-direction: column;
+  }
+`;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SetlistForm from "../components/form/music-search/setlist-form.tsx";
@@ -10,23 +10,11 @@ import UserButton from "../components/user/user-button.tsx";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-
-export interface TicketInfo {
-  mainPhoto: number;
-  photo: string[];
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  seat: string;
-  selectedTracks: string[];
-  review: string;
-}
+import { TicketInfoType } from "../types/ticket.ts";
 
 export default function CreateTicket() {
-  const [tickets, setTickets] = useState<TicketInfo[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [ticketInfo, setTicketInfo] = useState<TicketInfo>({
+  const [ticketInfo, setTicketInfo] = useState<TicketInfoType>({
     mainPhoto: 0,
     photo: [],
     title: "",
@@ -79,7 +67,7 @@ export default function CreateTicket() {
       </FlexContainer>
       <FlexContainer>
         <DetailsForm ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
-        <SetlistForm ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
+        <SetlistForm setTicketInfo={setTicketInfo} />
       </FlexContainer>
       <AddButton onClick={onSaveTicket}>Add Ticket</AddButton>
       <UserButton />

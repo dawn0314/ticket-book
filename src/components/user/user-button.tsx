@@ -1,4 +1,3 @@
-import React from "react";
 import { FaUser } from "react-icons/fa6";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -6,7 +5,6 @@ import { auth } from "../../firebase";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function UserButton() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [open, setOpen] = useState(false);
   const [showList, setShowList] = useState(true);
 
@@ -22,7 +20,6 @@ export default function UserButton() {
   const logOut = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
       auth.signOut();
-      setIsAuthenticated(false);
       alert("로그아웃 되었습니다.");
       navigate("/");
     }
@@ -60,7 +57,6 @@ const Icon = styled.div`
   width: 40px;
   height: 40px;
   text-decoration: none;
-  /* overflow: hidden; */
 
   &:hover svg {
     color: white;

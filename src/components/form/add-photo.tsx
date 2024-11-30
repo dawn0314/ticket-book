@@ -3,11 +3,11 @@ import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import { Alert } from "@mui/material";
-import type { TicketInfo } from "../../routes/create-ticket";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { TicketInfoType } from "../../types/ticket";
 
 interface AddPhotoProps {
-  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
+  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
   setFiles: (files: File[]) => void;
 }
 
@@ -20,11 +20,6 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
   const maxFileSize = 4 * 1024 * 1024;
 
   useEffect(() => {
-    // setTicketInfo((prev) => ({
-    //   ...prev,
-    //   photo: files,
-    // }));
-
     setFiles(files);
 
     const timeId = setTimeout(() => {
@@ -63,8 +58,6 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
       ...prev,
       mainPhoto: index,
     }));
-
-    console.log(mainImgIndex);
   };
 
   const handleDeletePhoto = (index: number) => {
@@ -117,7 +110,7 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
               src={url}
               alt={`Preview ${index}`}
               onClick={() => handleMainPhoto(index)}
-              mainImage={mainImgIndex === index}
+              $mainImage={mainImgIndex === index}
             />
             <DeleteButton onClick={() => handleDeletePhoto(index)} />
           </ImageContainer>
@@ -167,13 +160,13 @@ const ImageContainer = styled.div`
     display: block !important;
   }
 `;
-const ImagePreview = styled.img`
+const ImagePreview = styled.img<{ $mainImage: boolean }>`
   position: relative;
   width: 240px;
   height: 240px;
   object-fit: cover;
   border-radius: 15px;
-  ${(props) => props.mainImage && `border: 4px solid #F4D03F;`}
+  ${(props) => props.$mainImage && `border: 4px solid #F4D03F;`}
 `;
 
 const MainImgText = styled.div`

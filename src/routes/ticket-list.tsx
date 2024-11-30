@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/pagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import spring from "../assets/spring.png";
-import type { TicketInfo } from "./create-ticket";
 import UserButton from "../components/user/user-button";
 import { auth, db } from "../firebase";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { ExtendedTicketInfoType } from "../types/ticket";
 
 export default function TicketList() {
   const [page, setPage] = useState(1);
-  const [tickets, setTickets] = useState<TicketInfo[]>([]);
+  const [tickets, setTickets] = useState<ExtendedTicketInfoType[]>([]);
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
@@ -29,10 +29,10 @@ export default function TicketList() {
       );
       const snapshot = await getDocs(ticketQuery);
       const userTickets = snapshot.docs.map((doc) => {
-        const data = doc.data() as TicketInfo;
+        const data = doc.data() as ExtendedTicketInfoType;
         return {
-          id: doc.id,
           ...data,
+          id: doc.id,
         };
       });
 

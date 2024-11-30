@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   List,
   Checkbox,
@@ -9,7 +9,7 @@ import {
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { sharedButton } from "../../sharedStyles";
-import { v4 as uuidv4 } from "uuid";
+import { TrackDataType } from "../../../types/music";
 
 export default function TrackList({
   accessToken,
@@ -17,8 +17,8 @@ export default function TrackList({
   selectedTracks,
   onSaveSelectedTracks,
 }) {
-  const [tracklist, setTracklist] = useState([]);
-  const [checked, setChecked] = useState([]);
+  const [tracklist, setTracklist] = useState<TrackDataType[]>([]);
+  const [checked, setChecked] = useState<number[]>([]);
   const [alert, setAlert] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,8 @@ export default function TrackList({
       },
     };
 
-    const tracks = await fetch(
+    /* fetch tracks */
+    await fetch(
       "https://api.spotify.com/v1/albums/" +
         selectedAlbum +
         "/tracks" +
@@ -72,7 +73,7 @@ export default function TrackList({
   const handleSave = () => {
     const trackName = checked.map((index) => {
       return {
-        id: uuidv4(),
+        id: tracklist[index].id,
         title: tracklist[index].name,
       };
     });

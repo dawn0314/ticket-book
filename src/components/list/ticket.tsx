@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
 import barcode from "../../assets/barcode.png";
 import { useNavigate } from "react-router-dom";
-import type { TicketInfo } from "../../routes/create-ticket";
+import { ExtendedTicketInfoType } from "../../types/ticket";
 
-type TicketProps = {
-  ticket: TicketInfo;
-};
+interface TicketProps {
+  ticket: ExtendedTicketInfoType;
+}
 
 export default function Ticket({ ticket }: TicketProps) {
   const navigate = useNavigate();

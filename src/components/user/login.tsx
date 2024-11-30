@@ -105,7 +105,7 @@ const Form = styled.form`
   width: 100%;
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ submit?: boolean }>`
   padding: 10px 20px;
   border-radius: 50px;
   border: none;

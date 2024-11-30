@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { sharedWrapper, sharedTitle } from "../sharedStyles";
-import type { TicketInfo } from "../../routes/create-ticket";
+import { TicketInfoType } from "../../types/ticket";
 
 interface ReviewFormProps {
-  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfo>>;
+  setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
 }
 
 export default function ReviewForm({ setTicketInfo }: ReviewFormProps) {

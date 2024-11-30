@@ -4,14 +4,23 @@ import styled from "styled-components";
 import { IconButton } from "@mui/material";
 import TrackList from "./track-list";
 import AlbumList from "./album-list";
+import { TrackType } from "../../../types/music";
 
-export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
-  const [input, setInput] = useState("");
-  const [artistsList, setArtistsList] = useState([]);
-  const [albumsList, setAlbumsList] = useState([]);
-  const [toggle, setToggle] = useState(true);
-  const [selectedArtist, setSelectedArtist] = useState(null);
-  const [selectedAlbum, setSelectedAlbum] = useState(null);
+interface MusicSearchProps {
+  selectedTracks: TrackType[];
+  setSelectedTracks: React.Dispatch<React.SetStateAction<TrackType[]>>;
+}
+
+export default function MusicSearch({
+  selectedTracks,
+  setSelectedTracks,
+}: MusicSearchProps) {
+  const [input, setInput] = useState<string>("");
+  const [artistsList, setArtistsList] = useState<any[]>([]);
+  const [albumsList, setAlbumsList] = useState<any[]>([]);
+  const [toggle, setToggle] = useState<boolean>(true);
+  const [selectedArtist, setSelectedArtist] = useState<string | null>(null);
+  const [selectedAlbum, setSelectedAlbum] = useState<string | null>(null);
 
   const [accessToken, setAccessToken] = useState("");
   const CLIENT_ID = "071a110f049348b18c3d479f01d4f38a";
@@ -36,7 +45,7 @@ export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
       .then((data) => setAccessToken(data.access_token));
   }, [selectedArtist]);
 
-  async function search() {
+  async function search(input: string) {
     const searchParameters = {
       method: "GET",
       headers: {
@@ -44,7 +53,9 @@ export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
         Authorization: "Bearer " + accessToken,
       },
     };
-    const artistID = await fetch(
+
+    /* fetch artist name */
+    await fetch(
       "https://api.spotify.com/v1/search?q=" + input + "&type=artist",
       searchParameters
     )
@@ -63,7 +74,8 @@ export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
       },
     };
 
-    const albums = await fetch(
+    /* fetch album list */
+    await fetch(
       "https://api.spotify.com/v1/artists/" +
         selectedArtist +
         "/albums" +
@@ -76,7 +88,7 @@ export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
       });
   };
 
-  function renderAlbumData(albumsList) {
+  function renderAlbumData(albumsList: any[]) {
     return selectedAlbum && selectedAlbum.length > 0 ? (
       <TrackList
         accessToken={accessToken}
@@ -89,13 +101,13 @@ export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
     );
   }
 
-  async function handleArtistSelection(artist) {
+  async function handleArtistSelection(artist: string) {
     await setSelectedArtist(artist);
     setSelectedAlbum(null);
     setToggle(false);
   }
 
-  const handleChange = (value) => {
+  const handleChange = (value: string) => {
     setInput(value);
     setToggle(true);
   };
@@ -108,7 +120,7 @@ export default function MusicSearch({ selectedTracks, setSelectedTracks }) {
     <Wrapper>
       <SearchContainer>
         <SearchBar
-          placeholder="Search For An Artist"
+          placeholder="아티스트 검색"
           value={input}
           onChange={(e) => {
             handleChange(e.target.value);

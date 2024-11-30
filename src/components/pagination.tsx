@@ -9,6 +9,7 @@ interface PaginationProps {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
+
 export default function Pagination({
   totalPage,
   limit,
@@ -38,14 +39,17 @@ export default function Pagination({
 
   return (
     <Wrapper>
-      <LeftPageButton onClick={() => setPage(page - 1)} disabled={page === 1} />
+      <LeftPageButton
+        onClick={() => setPage(page - 1)}
+        $disabled={page === 1}
+      />
       <ButtonWrapper>
         {currentPageArray?.map((i) => (
           <PageButton
             key={i + 1}
-            active={page === i + 1}
+            $active={page === i + 1}
             onClick={() => setPage(i + 1)}
-            aria-current={page === i + 1 ? "page" : null}
+            $aria-current={page === i + 1 ? "page" : null}
           >
             {i + 1}
           </PageButton>
@@ -53,7 +57,7 @@ export default function Pagination({
       </ButtonWrapper>
       <RightPageButton
         onClick={() => setPage(page + 1)}
-        disabled={page === totalPage}
+        $disabled={page === totalPage}
       />
     </Wrapper>
   );
@@ -71,7 +75,7 @@ const ButtonWrapper = styled.div`
   justify-content: space-around;
 `;
 
-const PageButton = styled.div`
+const PageButton = styled.div<{ $active: boolean }>`
   cursor: pointer;
   text-align: center;
   border-radius: 50%;
@@ -82,11 +86,10 @@ const PageButton = styled.div`
   &:hover {
     border: solid 2px var(--primary-dark);
   }
-  ${(props) =>
-    props.active &&
+
+  ${({ $active }) =>
+    $active &&
     css`
-      width: 30px;
-      height: 30px;
       background-color: var(--accent);
       color: white;
       font-weight: 700;
@@ -94,12 +97,14 @@ const PageButton = styled.div`
     `}
 `;
 
-const LeftPageButton = styled(ArrowBackIosRoundedIcon)`
-  cursor: pointer;
-  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+const LeftPageButton = styled(ArrowBackIosRoundedIcon)<{ $disabled: boolean }>`
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
+  pointer-events: ${(props) => (props.$disabled ? "none" : "auto")};
 `;
 
-const RightPageButton = styled(ArrowForwardIosRoundedIcon)`
-  cursor: pointer;
-  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+const RightPageButton = styled(ArrowForwardIosRoundedIcon)<{
+  $disabled: boolean;
+}>`
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
+  pointer-events: ${(props) => (props.$disabled ? "none" : "auto")};
 `;

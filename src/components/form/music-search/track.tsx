@@ -3,8 +3,21 @@ import { CSS } from "@dnd-kit/utilities";
 import { styled, css } from "styled-components";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import { TrackType } from "../../../types/music";
 
-export const Track = ({ id, title, selectedTracks, setSelectedTracks }) => {
+interface TrackProps {
+  id: string;
+  title: string;
+  selectedTracks: TrackType[];
+  setSelectedTracks: React.Dispatch<React.SetStateAction<TrackType[]>>;
+}
+
+export default function Track({
+  id,
+  title,
+  selectedTracks,
+  setSelectedTracks,
+}: TrackProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -13,7 +26,7 @@ export const Track = ({ id, title, selectedTracks, setSelectedTracks }) => {
     transform: CSS.Transform.toString(transform),
   };
 
-  const handleDeleteTrack = (e) => {
+  const handleDeleteTrack = () => {
     const updatedTracks = selectedTracks.filter((track) => track.id !== id);
     setSelectedTracks(updatedTracks);
   };
@@ -25,7 +38,7 @@ export const Track = ({ id, title, selectedTracks, setSelectedTracks }) => {
       <RemoveIcon className="remove-icon" onClick={handleDeleteTrack} />
     </TrackItem>
   );
-};
+}
 
 const styledTrack = css`
   padding: 8px;

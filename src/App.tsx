@@ -54,19 +54,12 @@ const router = createBrowserRouter([
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
+    const unsubscribe = auth.onAuthStateChanged(() => {
       setIsLoading(false);
     });
 
-    // 컴포넌트가 언마운트 될 때 리스너를 정리
     return () => unsubscribe();
   }, []);
 

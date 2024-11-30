@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { sharedWrapper } from "../sharedStyles";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -44,6 +43,7 @@ export default function CreateAccount() {
       navigate("/");
     } catch (e) {
       console.error(e);
+      setError("Error occured");
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ export default function CreateAccount() {
           required
         />
         <Input
-          submit
+          $isSubmit
           type="submit"
           value={isLoading ? "Loading..." : "Create Account"}
         />
@@ -90,7 +90,6 @@ export default function CreateAccount() {
 }
 
 const Wrapper = styled.div`
-  /* ${sharedWrapper} */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,7 +110,7 @@ const Form = styled.form`
   width: 300px;
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ $isSubmit?: boolean }>`
   padding: 10px 20px;
   border-radius: 50px;
   border: none;
@@ -124,7 +123,7 @@ const Input = styled.input`
     }
   }
 
-  margin-top: ${(props) => (props.submit ? "12px" : "")};
+  margin-top: ${(props) => (props.$isSubmit ? "12px" : "")};
 `;
 
 const Error = styled.span`
