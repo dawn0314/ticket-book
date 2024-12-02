@@ -60,7 +60,6 @@ export default function Setlist({ setTicketInfo }: SetListProps) {
     selectedTracks: TrackType[],
     customTrackInput: string
   ) => {
-    console.log(selectedTracks);
     if (selectedTracks.length === 24) {
       setAlert(true);
     } else {
