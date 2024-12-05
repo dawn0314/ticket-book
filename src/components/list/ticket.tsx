@@ -27,13 +27,13 @@ export default function Ticket({ ticket }: TicketProps) {
 
   return (
     <Wrapper onClick={() => navigate(`/ticket-list/${id}`)}>
-      <Image src={photo[mainPhoto]} />
+      <Image src={photo?.[mainPhoto]} />
       <Content>
-        <Title>{title}</Title>
+        <Title>{title || ""}</Title>
         <InfoContainer>
-          {date} {date && time && " / "} {time}
+          {date || ""} {date && time && " / "} {time || ""}
           <br />
-          {location ? `@ ${location}` : null}
+          {location ? `@ ${location}` : ""}
         </InfoContainer>
       </Content>
       <TearLine />
