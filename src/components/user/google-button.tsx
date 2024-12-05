@@ -61,6 +61,7 @@ const Button = styled.span`
   height: 2.5rem;
   background-color: var(--accent);
   cursor: pointer;
+  box-shadow: none;
 
   &:hover {
     background-color: var(--light-200);
