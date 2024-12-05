@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { auth } from "../../firebase";
+import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import GoogleButton from "./google-button";
+import GoogleButton from "../components/user/google-button";
 
 export default function CreateAccount() {
   const navigate = useNavigate();
@@ -14,9 +14,8 @@ export default function CreateAccount() {
   const [error, setError] = useState("");
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value },
-    } = e;
+    const { name, value } = e.target;
+
     if (name === "name") {
       setName(value);
     } else if (name === "email") {
@@ -43,7 +42,7 @@ export default function CreateAccount() {
       navigate("/");
     } catch (e) {
       console.error(e);
-      setError("Error occured");
+      setError(e.message);
     } finally {
       setLoading(false);
     }
@@ -129,4 +128,5 @@ const Input = styled.input<{ $isSubmit?: boolean }>`
 const Error = styled.span`
   font-weight: 600;
   color: tomato;
+  margin-top: 20px;
 `;

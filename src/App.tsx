@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import Home from "./routes/home";
 import ErrorPage from "./error-page";
+import TicketList from "./routes/ticket-list";
+import Login from "./routes/login";
 import CreateTicket from "./routes/create-ticket";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createGlobalStyle, styled } from "styled-components";
 import reset from "styled-reset";
-import TicketList from "./routes/ticket-list";
 import TicketDetail from "./components/list/ticket-detail";
-import CreateAccount from "./components/user/create-account";
 import { auth } from "./firebase";
 import ProtectedRoute from "./components/protected-route";
-import Login from "./components/user/login";
+import CreateAccount from "./routes/create-account";
 
 const router = createBrowserRouter([
   {

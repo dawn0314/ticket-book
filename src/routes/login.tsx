@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { auth } from "../../firebase";
+import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import {
@@ -8,7 +8,7 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import GoogleButton from "./google-button";
+import GoogleButton from "../components/user/google-button";
 
 export default function Login() {
   const navigate = useNavigate();
