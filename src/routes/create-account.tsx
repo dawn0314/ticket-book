@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import GoogleButton from "../components/user/google-button";
+import { GoogleButton } from "@components/";
 
 export default function CreateAccount() {
   const navigate = useNavigate();

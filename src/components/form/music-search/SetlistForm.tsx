@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import MusicSearch from "./music-search";
 import LibraryMusicRoundedIcon from "@mui/icons-material/LibraryMusicRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { sharedWrapper, sharedButton, sharedTitle } from "../../sharedStyles";
 import { Drawer, Alert } from "@mui/material";
+import MusicSearch from "./MusicSearch";
 import {
   DndContext,
   KeyboardSensor,
@@ -20,16 +20,16 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import Track from "./track";
 import { v4 as uuidv4 } from "uuid";
 import { TicketInfoType } from "../../../types/ticket";
 import { TrackType } from "../../../types/music";
+import Track from "./Track";
 
 interface SetListProps {
   setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
 }
 
-export default function Setlist({ setTicketInfo }: SetListProps) {
+export default function SetlistForm({ setTicketInfo }: SetListProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedTracks, setSelectedTracks] = useState<TrackType[]>([]);
   const [customTrackInput, setCustomTrackInput] = useState<string>("");

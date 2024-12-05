@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import styled from "styled-components";
 import { IconButton } from "@mui/material";
-import TrackList from "./track-list";
-import AlbumList from "./album-list";
-import { TrackType } from "../../../types/music";
+import type { TrackType } from "../../../types/music";
+import TrackList from "./TrackList";
+import AlbumList from "./AlbumList";
 
 interface MusicSearchProps {
   selectedTracks: TrackType[];

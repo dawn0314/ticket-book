@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { useNavigate, Link } from "react-router-dom";
 import { createTheme, ThemeProvider, Modal, Fade } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";

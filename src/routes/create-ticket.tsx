@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import SetlistForm from "../components/form/music-search/setlist-form.tsx";
-import AddPhoto from "../components/form/add-photo";
-import DetailsForm from "../components/form/details-form.tsx";
-import ReviewForm from "../components/form/review-form";
 import { sharedButton } from "../components/sharedStyles.ts";
-import UserButton from "../components/user/user-button.tsx";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { TicketInfoType } from "../types/ticket.ts";
+import {
+  SetlistForm,
+  AddPhoto,
+  DetailsForm,
+  ReviewForm,
+  UserButton,
+} from "../components/index";
 
 export default function CreateTicket() {
   const [files, setFiles] = useState<File[]>([]);

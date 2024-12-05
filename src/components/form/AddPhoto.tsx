@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import { Alert } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { TicketInfoType } from "../../types/ticket";
 
 interface AddPhotoProps {

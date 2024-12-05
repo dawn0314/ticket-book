@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import Ticket from "../components/list/ticket";
+import { Ticket, Pagination, UserButton } from "@components/";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Pagination from "../components/pagination";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import spring from "../assets/spring.png";
-import UserButton from "../components/user/user-button";
 import { auth, db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { ExtendedTicketInfoType } from "../types/ticket";

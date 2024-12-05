@@ -8,7 +8,7 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import GoogleButton from "../components/user/google-button";
+import { GoogleButton } from "@components/";
 
 export default function Login() {
   const navigate = useNavigate();

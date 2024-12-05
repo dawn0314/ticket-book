@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
-import Cover from "../components/cover";
-import { useEffect, useState } from "react";
+import { Cover } from "@components/";
 import { auth } from "../firebase";
 import tickets from "../assets/tickets.png";
 
