@@ -41,8 +41,7 @@ export default function CreateAccount() {
       });
       navigate("/");
     } catch (e) {
-      console.error(e);
-      setError(e.message);
+      setError((e as Error).message);
     } finally {
       setLoading(false);
     }
