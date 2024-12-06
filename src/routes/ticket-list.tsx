@@ -1,43 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Ticket, Pagination, UserButton } from "@components/";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import spring from "../assets/spring.png";
-import { auth, db } from "../firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { ExtendedTicketInfoType } from "../types/ticket";
+import useTickets from "../hooks/useTickets";
 
 export default function TicketList() {
   const [page, setPage] = useState(1);
-  const [tickets, setTickets] = useState<ExtendedTicketInfoType[]>([]);
-  const [totalPage, setTotalPage] = useState(1);
-
-  useEffect(() => {
-    fetchTickets();
-  }, []);
-
-  const fetchTickets = async () => {
-    const user = auth.currentUser;
-
-    if (user) {
-      const ticketQuery = query(
-        collection(db, "users", user.uid, "tickets"),
-        where("userId", "==", user.uid)
-      );
-      const snapshot = await getDocs(ticketQuery);
-      const userTickets = snapshot.docs.map((doc) => {
-        const data = doc.data() as ExtendedTicketInfoType;
-        return {
-          ...data,
-          id: doc.id,
-        };
-      });
-
-      setTickets(userTickets);
-      setTotalPage(Math.ceil(userTickets.length / 4));
-    }
-  };
+  const { tickets, totalPage, loading, error } = useTickets({});
 
   const getDisplayedTickets = () => {
     const startIndex = (page - 1) * 4;
@@ -46,6 +17,9 @@ export default function TicketList() {
   };
 
   const displayedTickets = getDisplayedTickets();
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <Wrapper>

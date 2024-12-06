@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { createTheme, ThemeProvider, Modal, Fade } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { deleteDoc, doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import { auth, db, storage } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
-import { ExtendedTicketInfoType, TicketInfoType } from "../../types/ticket";
+import useTickets from "../../hooks/useTickets";
 
 const theme = createTheme({
   components: {
@@ -29,40 +29,14 @@ const theme = createTheme({
 
 export default function TicketDetail() {
   const { id } = useParams<{ id: string }>();
-  const [ticket, setTicket] = useState<ExtendedTicketInfoType | undefined>(
-    undefined
-  );
+  const { ticket, loading, error } = useTickets({ id });
 
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState("false");
 
-  const user = auth.currentUser;
   const navigate = useNavigate();
   const ticketInfo = ticket?.ticketInfo;
   const photo = ticket?.photo || [];
-
-  useEffect(() => {
-    const fetchTicket = async () => {
-      if (id && user) {
-        try {
-          const ticketDoc = doc(db, "users", user.uid, "tickets", id);
-          const ticketSnapshot = await getDoc(ticketDoc);
-          if (ticketSnapshot.exists()) {
-            const data = ticketSnapshot.data() as {
-              ticketInfo: TicketInfoType;
-              photo: string[];
-            };
-            setTicket({ id: ticketSnapshot.id, ...data });
-          } else {
-            console.log("티켓을 찾을 수 없습니다.");
-          }
-        } catch (error) {
-          console.error("Error fetching ticket: ", error);
-        }
-      }
-    };
-    fetchTicket();
-  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -92,6 +66,9 @@ export default function TicketDetail() {
     }
     navigate("/ticket-list");
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <Wrapper>
