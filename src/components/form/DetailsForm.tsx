@@ -7,7 +7,7 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { sharedWrapper } from "../sharedStyles";
-import { TicketInfoType } from "../../types/ticket";
+import { TicketInfoType } from "@type/ticket";
 
 interface DetailsFormProps {
   ticketInfo: TicketInfoType;

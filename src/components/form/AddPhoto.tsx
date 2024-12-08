@@ -4,7 +4,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import { Alert } from "@mui/material";
-import { TicketInfoType } from "../../types/ticket";
+import { TicketInfoType } from "@type/ticket";
 
 interface AddPhotoProps {
   setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;

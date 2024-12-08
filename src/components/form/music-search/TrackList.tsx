@@ -9,7 +9,7 @@ import {
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { sharedButton } from "../../sharedStyles";
-import { TrackDataType } from "../../../types/music";
+import { TrackDataType } from "@type/music";
 
 export default function TrackList({
   accessToken,

@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import barcode from "../../assets/barcode.png";
 import { useNavigate } from "react-router-dom";
-import { ExtendedTicketInfoType } from "../../types/ticket";
+import { ExtendedTicketInfoType } from "@type/ticket";
 
 interface TicketProps {
   ticket: ExtendedTicketInfoType;

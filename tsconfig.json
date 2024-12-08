@@ -6,11 +6,13 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "noImplicitAny": false,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@components/*": ["src/components/*"],
-      "@routes/*": ["src/routes/*"]
+      "@routes/*": ["src/routes/*"],
+      "@type/*": ["src/types/*"]
     },
+    "types": ["node"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

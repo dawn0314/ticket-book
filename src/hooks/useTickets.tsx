@@ -8,7 +8,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { ExtendedTicketInfoType, TicketInfoType } from "../types/ticket";
+import { ExtendedTicketInfoType, TicketInfoType } from "@type/ticket";
 
 type UseTicketsOption = {
   id?: string; // 티켓 ID

@@ -3,7 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { styled, css } from "styled-components";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { TrackType } from "../../../types/music";
+import { TrackType } from "@type/music";
 
 interface TrackProps {
   id: string;

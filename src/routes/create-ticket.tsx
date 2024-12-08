@@ -5,7 +5,7 @@ import { sharedButton } from "../components/sharedStyles.ts";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { TicketInfoType } from "../types/ticket.ts";
+import { TicketInfoType } from "@type/ticket";
 import {
   SetlistForm,
   AddPhoto,
