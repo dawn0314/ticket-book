@@ -23,8 +23,9 @@ export default function MusicSearch({
   const [selectedAlbum, setSelectedAlbum] = useState<string | null>(null);
 
   const [accessToken, setAccessToken] = useState("");
-  const CLIENT_ID = "071a110f049348b18c3d479f01d4f38a";
-  const CLIENT_SECRET = "8dbe3211decd4b75ac94ec0148643ccd";
+
+  const clientID = import.meta.env.VITE_CLIENT_ID;
+  const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 
   useEffect(() => {
     if (selectedArtist) fetchAlbumData();
@@ -36,9 +37,9 @@ export default function MusicSearch({
       },
       body:
         "grant_type=client_credentials&client_id=" +
-        CLIENT_ID +
+        clientID +
         "&client_secret=" +
-        CLIENT_SECRET,
+        clientSecret,
     };
     fetch("https://accounts.spotify.com/api/token", authParameters)
       .then((result) => result.json())
