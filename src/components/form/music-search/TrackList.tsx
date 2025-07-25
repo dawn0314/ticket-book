@@ -19,7 +19,10 @@ export default function TrackList({
 }) {
   const [tracklist, setTracklist] = useState<TrackDataType[]>([]);
   const [checked, setChecked] = useState<number[]>([]);
-  const [alert, setAlert] = useState(false);
+  const [alert, setAlert] = useState<{
+    type: "error" | "success";
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     if (selectedAlbum) {
@@ -27,7 +30,7 @@ export default function TrackList({
     }
 
     const timeId = setTimeout(() => {
-      setAlert(false);
+      setAlert(null);
     }, 3000);
 
     return () => {
@@ -80,37 +83,40 @@ export default function TrackList({
 
     const updatedSelectedTracks = [...selectedTracks, ...trackName];
     if (updatedSelectedTracks.length > 24) {
-      setAlert(true);
+      setAlert({
+        type: "error",
+        message: `트랙은 24개 미만이어야 합니다다. (현재 선택: ${selectedTracks.length})`,
+      });
     } else {
       onSaveSelectedTracks(updatedSelectedTracks);
+      setAlert({
+        type: "success",
+        message: `트랙이 추가되었습니다.`,
+      });
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
       <TrackContainer>
-        <List>
-          {tracklist.map((track, id) => (
-            <Track key={track.id}>
-              <ListItemButton onClick={handleToggle(id)}>
-                <Checkbox
-                  edge="start"
-                  checked={checked.indexOf(id) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                />
-                <ListItemText>{track.name}</ListItemText>
-              </ListItemButton>
-            </Track>
-          ))}
-        </List>
+        {tracklist.map((track, id) => (
+          <Track key={track.id}>
+            <ListItemButton onClick={handleToggle(id)}>
+              <Checkbox
+                edge="start"
+                checked={checked.indexOf(id) !== -1}
+                tabIndex={-1}
+                disableRipple
+              />
+              <ListItemText>{track.name}</ListItemText>
+            </ListItemButton>
+          </Track>
+        ))}
       </TrackContainer>
-      {alert && (
-        <Alert severity="error">
-          {`Your tracks must be less than 24. (Current selected tracks: ${selectedTracks.length})`}
-        </Alert>
-      )}
-      <Submit onClick={handleSave}>Submit</Submit>
+      {alert && <Alert severity={alert.type}>{alert.message}</Alert>}
+      <SubmitContainer>
+        <Submit onClick={handleSave}>ADD</Submit>
+      </SubmitContainer>
     </ThemeProvider>
   );
 }
@@ -149,10 +155,14 @@ const Track = styled.div`
   align-items: center;
 `;
 
+const SubmitContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+`;
+
 const Submit = styled.button`
-  position: absolute;
-  left: 410px;
-  top: 20px;
   width: 80px;
   padding: 6px;
   font-weight: 600;
