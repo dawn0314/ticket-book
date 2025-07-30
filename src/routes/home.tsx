@@ -37,6 +37,7 @@ export default function Home() {
   return (
     <Wrapper>
       {viewCover && <Cover onClose={toggleCoverVisibility} />}
+      <TicketsImage src={tickets} />
       {isAuthenticated ? (
         <div>
           <Title>
@@ -46,7 +47,7 @@ export default function Home() {
           <ButtonWrapper>
             <NavLink to="/ticket-list">티켓북 열기</NavLink>
             <NavLink to="/create-ticket">티켓 추가하기</NavLink>
-            <Logout onClick={logOut}>Log Out</Logout>
+            <Logout onClick={logOut}>로그아웃</Logout>
           </ButtonWrapper>
         </div>
       ) : (
@@ -61,16 +62,12 @@ export default function Home() {
           </ButtonWrapper>
         </div>
       )}
-      <TicketsImage src={tickets} />
     </Wrapper>
   );
 }
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 80px;
+const TicketsImage = styled.img`
+  width: 300px;
 `;
 
 const NavLink = styled(Link)`
@@ -106,10 +103,6 @@ const Subtitle = styled.h3`
   text-align: left;
 `;
 
-const TicketsImage = styled.img`
-  width: 300px;
-`;
-
 const Logout = styled.button`
   background-color: transparent;
   color: #fff;
@@ -118,4 +111,22 @@ const Logout = styled.button`
   border: none;
   right: 10px;
   bottom: 10px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+
+  @media screen and (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 20px;
+
+    ${TicketsImage} {
+      order: -1;
+    }
+  }
 `;

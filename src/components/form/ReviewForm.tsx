@@ -26,6 +26,11 @@ const Wrapper = styled.div`
   ${sharedWrapper}
   min-height: 40vh;
   min-width: 500px;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    min-width: unset;
+  }
 `;
 
 const Textarea = styled.textarea`

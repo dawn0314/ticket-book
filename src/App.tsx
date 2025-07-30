@@ -89,7 +89,8 @@ const GlobalStyles = createGlobalStyle`
     font-family: "Public Sans", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     height: 100vh;
     background-color: var(--primary-dark);
-    min-width: 800px;
+    width: 100%;
+    overflow-x: hidden;
   }
   ::-webkit-scrollbar {
    display:none;
@@ -104,6 +105,13 @@ const Wrapper = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
+
+  width: 100%;
+  padding: 0 1rem;
+
+  @media screen and (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `;
 
 export default App;

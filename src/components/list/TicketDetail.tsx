@@ -139,6 +139,17 @@ const Wrapper = styled.div`
   margin: 0 30px;
   overflow: auto;
   background: var(--light);
+
+  @media screen and (min-width: 1450px) {
+    display: grid;
+    grid-template-columns: 800px 1fr;
+  }
+
+  @media screen and (max-width: 1024px) {
+    margin: 0;
+    padding: 50px 30px;
+    width: 100%;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -161,11 +172,15 @@ const FlexContainer = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 30px;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 const PhotoWrapper = styled.div`
   ${sharedWrapper}
-  width: 800px;
+  max-width: 800px;
 `;
 
 const ImageGrid = styled.div`
@@ -212,6 +227,11 @@ const TrackContainer = styled.div`
   flex-basis: 50%;
   line-height: normal;
   gap: 6px;
+
+  @media screen and (max-width: 800px) {
+    min-width: 0;
+    max-height: 100%;
+  }
 `;
 
 const TrackTitle = styled.div`
@@ -224,7 +244,7 @@ const TrackTitle = styled.div`
 
 const ReviewContainer = styled.div`
   ${sharedWrapper}
-  width: 800px;
+  max-width: 800px;
 `;
 const Review = styled.div`
   margin: 0 40px;

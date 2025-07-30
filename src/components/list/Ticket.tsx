@@ -15,7 +15,6 @@ export default function Ticket({ ticket }: TicketProps) {
 
   const renderSeat = () => {
     const seats = ticket.ticketInfo.seat.split(" ");
-
     return seats.map((seat: string, index: number) => {
       return (
         <div key={index} className="seat">
@@ -35,6 +34,7 @@ export default function Ticket({ ticket }: TicketProps) {
           <br />
           {location ? `@ ${location}` : ""}
         </InfoContainer>
+        <MobileSeat>{renderSeat()}</MobileSeat>
       </Content>
       <TearLine />
       <TearOff>
@@ -64,38 +64,69 @@ const Wrapper = styled.div`
   justify-content: space-between;
   cursor: pointer;
   box-shadow: 4px 5px 5px #ddd;
+
+  @media screen and (max-width: 800px) {
+    width: 80vw;
+    min-height: 200px;
+  }
 `;
 
 const Content = styled.div`
   width: 360px;
   height: 200px;
+  min-width: 120px;
+  text-align: right;
+  margin-right: 20px;
+
+  @media screen and (max-width: 800px) {
+    margin: 30px 0 0 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 20px;
+  }
 `;
+
 const Image = styled.img`
   width: 200px;
   height: 100%;
   object-fit: cover;
   position: relative;
+
+  @media screen and (max-width: 800px) {
+    min-width: 160px;
+  }
 `;
 
 const Title = styled.div`
-  font-size: 36px;
-  margin: 40px 0px 20px 20px;
-  text-align: right;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 300px;
-  display: -webkit-box;
-  max-height: 70px;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  display: inline-block;
+  font-size: 20px;
+  overflow: auto;
+
+  @media screen and (min-width: 800px) {
+    font-size: 36px;
+    margin: 40px 0px 20px 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 300px;
+    display: -webkit-box;
+    max-height: 70px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    display: inline-block;
+  }
 `;
+
 const InfoContainer = styled.div`
-  text-align: right;
-  margin: 0 40px 20px 0;
-  line-height: normal;
+  font-size: 10px;
+
+  @media screen and (min-width: 800px) {
+    margin: 0 40px 20px 0;
+    line-height: normal;
+    font-size: 14px;
+    text-align: right;
+  }
 `;
 
 const TearLine = styled.div`
@@ -111,6 +142,10 @@ const TearLine = styled.div`
     ${tearShape}
     top: 93%;
   }
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 
 const Seat = styled.div`
@@ -123,12 +158,31 @@ const Seat = styled.div`
   gap: 20px;
   width: 170px;
   font-size: 18px;
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+`;
+
+const MobileSeat = styled.div`
+  display: none;
+
+  @media screen and (max-width: 800px) {
+    display: flex;
+    font-size: 18px;
+    gap: 10px;
+    font-size: 14px;
+  }
 `;
 
 const Barcode = styled.img`
   width: 240px;
   margin: 125px -14px;
   transform: rotate(90deg);
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 
 const TearOff = styled.div`

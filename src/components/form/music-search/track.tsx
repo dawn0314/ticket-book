@@ -44,9 +44,9 @@ const styledTrack = css`
   padding: 8px;
   border-radius: 20px;
   margin: 2px 2px;
-  max-width: 230px;
   display: flex;
   align-items: center;
+  box-sizing: border-box;
 
   &:hover {
     background-color: #eee;

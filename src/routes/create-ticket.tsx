@@ -90,6 +90,12 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 800px 1fr;
   }
+
+  @media screen and (max-width: 1024px) {
+    margin: 0;
+    padding: 50px 30px;
+    width: 100%;
+  }
 `;
 
 const FlexContainer = styled.div`

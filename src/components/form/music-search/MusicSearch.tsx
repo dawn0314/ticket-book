@@ -5,15 +5,18 @@ import { IconButton } from "@mui/material";
 import type { TrackType } from "@type/music";
 import TrackList from "./TrackList";
 import AlbumList from "./AlbumList";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface MusicSearchProps {
   selectedTracks: TrackType[];
   setSelectedTracks: React.Dispatch<React.SetStateAction<TrackType[]>>;
+  onCloseDrawer: () => void;
 }
 
 export default function MusicSearch({
   selectedTracks,
   setSelectedTracks,
+  onCloseDrawer,
 }: MusicSearchProps) {
   const [input, setInput] = useState<string>("");
   const [artistsList, setArtistsList] = useState<any[]>([]);
@@ -119,46 +122,49 @@ export default function MusicSearch({
 
   return (
     <Wrapper>
-      <SearchContainer>
-        <SearchBar
-          placeholder="아티스트 검색"
-          value={input}
-          onChange={(e) => {
-            handleChange(e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key == "Enter") {
-              search(input);
-            }
-          }}
-        />
-        <IconButton id="search-icon" onClick={() => search(input)}>
-          <SearchRoundedIcon />
-        </IconButton>
-        {toggle ? (
-          artistsList && artistsList.length > 0 ? (
-            <SearchBarList>
-              {artistsList.map((artist, id) => {
-                return (
-                  <SearchItem
-                    key={id}
-                    onClick={() => {
-                      handleArtistSelection(artist.id);
-                      toggleSuggestionList();
-                    }}
-                  >
-                    {artist.name}
-                  </SearchItem>
-                );
-              })}
-            </SearchBarList>
-          ) : (
-            <SearchBarList>
-              <div>No Result</div>
-            </SearchBarList>
-          )
-        ) : null}
-      </SearchContainer>
+      <UpperContainer>
+        <SearchContainer>
+          <SearchBar
+            placeholder="아티스트 검색"
+            value={input}
+            onChange={(e) => {
+              handleChange(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                search(input);
+              }
+            }}
+          />
+          <IconButton id="search-icon" onClick={() => search(input)}>
+            <SearchIcon />
+          </IconButton>
+          {toggle ? (
+            artistsList && artistsList.length > 0 ? (
+              <SearchBarList>
+                {artistsList.map((artist, id) => {
+                  return (
+                    <SearchItem
+                      key={id}
+                      onClick={() => {
+                        handleArtistSelection(artist.id);
+                        toggleSuggestionList();
+                      }}
+                    >
+                      {artist.name}
+                    </SearchItem>
+                  );
+                })}
+              </SearchBarList>
+            ) : (
+              <SearchBarList>
+                <div>No Result</div>
+              </SearchBarList>
+            )
+          ) : null}
+        </SearchContainer>
+        <CloseDrawerIcon onClick={onCloseDrawer} />
+      </UpperContainer>
       <ResultContainer>{renderAlbumData(albumsList)}</ResultContainer>
     </Wrapper>
   );
@@ -168,19 +174,30 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 500px;
+
+  @media screen and (max-width: 600px) {
+    width: 100vw;
+  }
 `;
 
 const SearchContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  align-self: center;
   width: 300px;
   height: 20px;
   margin: 20px;
   border: 1px solid #ddd;
   border-radius: 25px;
   padding: 20px;
+
+  @media screen and (max-width: 600px) {
+    min-width: 200px;
+  }
+`;
+const UpperContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SearchBar = styled.input`
@@ -221,4 +238,17 @@ const ResultContainer = styled.div`
   flex-wrap: wrap;
   width: 100%;
   overflow-y: auto;
+`;
+
+const SearchIcon = styled(SearchRoundedIcon)`
+  margin-left: -10px;
+`;
+
+const CloseDrawerIcon = styled(CloseIcon)`
+  color: #7f7f7f;
+  cursor: pointer;
+  margin-left: -10px;
+  &:hover {
+    color: #1a1a1a;
+  }
 `;

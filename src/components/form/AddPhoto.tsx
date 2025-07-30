@@ -124,6 +124,11 @@ const Wrapper = styled.div`
   ${sharedWrapper}
   max-height: 380px;
   min-width: 500px;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    min-width: unset;
+  }
 `;
 
 const Title = styled.div`

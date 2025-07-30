@@ -55,6 +55,12 @@ const Wrapper = styled.div`
   margin: 0 30px;
   overflow: auto;
   background: var(--light);
+
+  @media screen and (max-width: 800px) {
+    margin: 0;
+    padding: 50px 30px;
+    width: 100%;
+  }
 `;
 
 const NavLink = styled(Link)`

@@ -136,9 +136,11 @@ export default function SetlistForm({ setTicketInfo }: SetListProps) {
           </AddButtonContainer>
         </Title>
         <Drawer open={open} onClose={() => toggleDrawer(false)}>
+          {/* <CloseDrawerIcon onClick={() => toggleDrawer(false)} /> */}
           <MusicSearch
             selectedTracks={selectedTracks}
             setSelectedTracks={setSelectedTracks}
+            onCloseDrawer={() => toggleDrawer(false)}
           />
         </Drawer>
         <DndContext
@@ -190,6 +192,11 @@ const Wrapper = styled.div`
   ${sharedWrapper}
   max-height: 600px;
   min-width: 500px;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    min-width: unset;
+  }
 `;
 
 const AddButtonContainer = styled.div`
@@ -203,6 +210,7 @@ const AddButtonContainer = styled.div`
   padding: 5px;
   border: 4px solid white;
   border-radius: 25px;
+  /* flex-wrap: wrap; */
 `;
 
 const AddTextFieldContainer = styled.div`
@@ -258,3 +266,14 @@ const Title = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
+// const CloseDrawerIcon = styled(CloseIcon)`
+//   position: absolute;
+//   right: 30px;
+//   top: 30px;
+//   color: #7f7f7f;
+//   cursor: pointer;
+//   &:hover {
+//     color: #1a1a1a;
+//   }
+// `;
