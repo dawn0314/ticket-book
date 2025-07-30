@@ -13,6 +13,7 @@ export default function TicketList() {
   const getDisplayedTickets = () => {
     const startIndex = (page - 1) * 4;
     const endIndex = startIndex + 4;
+
     return tickets.slice(startIndex, endIndex);
   };
 
@@ -23,7 +24,7 @@ export default function TicketList() {
 
   return (
     <Wrapper>
-      {[
+      {/* {[
         displayedTickets
           .slice(0, 2)
           .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),
@@ -31,7 +32,13 @@ export default function TicketList() {
         displayedTickets
           .slice(2)
           .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),
-      ]}
+      ]} */}
+      {displayedTickets.map((ticket, index) => (
+        <div key={ticket.id}>
+          <Ticket ticket={ticket} />
+          {index === 1 && <Spring src={spring} key="spring" />}
+        </div>
+      ))}
       <Pagination
         totalPage={totalPage}
         limit={4}

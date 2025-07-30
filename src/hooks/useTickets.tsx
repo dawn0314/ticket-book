@@ -7,11 +7,12 @@ import {
   getDocs,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
 import { ExtendedTicketInfoType, TicketInfoType } from "@type/ticket";
 
 type UseTicketsOption = {
-  id?: string; // 티켓 ID
+  id?: string; // TICKET ID
 };
 
 export default function useTickets({ id }: UseTicketsOption) {
@@ -35,7 +36,7 @@ export default function useTickets({ id }: UseTicketsOption) {
         }
 
         if (id) {
-          // 특정 ID에 해당하는 단일 티켓 가져오기
+          // 특정 ID에 해당하는 티켓 가져오기
           const ticketDoc = doc(db, "users", user.uid, "tickets", id);
           const ticketSnapshot = await getDoc(ticketDoc);
           if (ticketSnapshot.exists()) {
@@ -51,7 +52,8 @@ export default function useTickets({ id }: UseTicketsOption) {
           // 전체 티켓 목록 가져오기
           const ticketQuery = query(
             collection(db, "users", user.uid, "tickets"),
-            where("userId", "==", user.uid)
+            where("userId", "==", user.uid),
+            orderBy("createdAt", "desc")
           );
           const snapshot = await getDocs(ticketQuery);
           const userTickets = snapshot.docs.map((doc) => ({
