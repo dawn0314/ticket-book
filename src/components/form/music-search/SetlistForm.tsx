@@ -26,14 +26,26 @@ import { TrackType } from "../../../types/music";
 import Track from "./Track";
 
 interface SetListProps {
+  ticketInfo?: TicketInfoType;
   setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
 }
 
-export default function SetlistForm({ setTicketInfo }: SetListProps) {
+export default function SetlistForm({
+  ticketInfo,
+  setTicketInfo,
+}: SetListProps) {
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedTracks, setSelectedTracks] = useState<TrackType[]>([]);
+  const [selectedTracks, setSelectedTracks] = useState<TrackType[]>(
+    ticketInfo?.selectedTracks || []
+  );
   const [customTrackInput, setCustomTrackInput] = useState<string>("");
   const [alert, setAlert] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (ticketInfo?.selectedTracks) {
+      setSelectedTracks(ticketInfo.selectedTracks);
+    }
+  }, [ticketInfo?.selectedTracks]);
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -136,7 +148,6 @@ export default function SetlistForm({ setTicketInfo }: SetListProps) {
           </AddButtonContainer>
         </Title>
         <Drawer open={open} onClose={() => toggleDrawer(false)}>
-          {/* <CloseDrawerIcon onClick={() => toggleDrawer(false)} /> */}
           <MusicSearch
             selectedTracks={selectedTracks}
             setSelectedTracks={setSelectedTracks}
@@ -210,7 +221,6 @@ const AddButtonContainer = styled.div`
   padding: 5px;
   border: 4px solid white;
   border-radius: 25px;
-  /* flex-wrap: wrap; */
 `;
 
 const AddTextFieldContainer = styled.div`
@@ -266,14 +276,3 @@ const Title = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
-// const CloseDrawerIcon = styled(CloseIcon)`
-//   position: absolute;
-//   right: 30px;
-//   top: 30px;
-//   color: #7f7f7f;
-//   cursor: pointer;
-//   &:hover {
-//     color: #1a1a1a;
-//   }
-// `;

@@ -64,6 +64,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   cursor: pointer;
   box-shadow: 4px 5px 5px #ddd;
+  margin-top: 20px;
 
   @media screen and (max-width: 800px) {
     width: 80vw;
@@ -89,7 +90,6 @@ const Content = styled.div`
 
 const Image = styled.img`
   width: 200px;
-  height: 100%;
   object-fit: cover;
   position: relative;
 
@@ -132,7 +132,7 @@ const InfoContainer = styled.div`
 const TearLine = styled.div`
   width: 1px;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23333333DE' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='40' stroke-linecap='square'/%3e%3c/svg%3e");
-  height: 100%;
+  height: 300px;
   position: relative;
   z-index: 1;
   &:before {

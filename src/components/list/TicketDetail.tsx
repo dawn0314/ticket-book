@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { createTheme, ThemeProvider, Modal, Fade } from "@mui/material";
@@ -10,6 +10,7 @@ import { auth, db, storage } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
 import useTickets from "../../hooks/useTickets";
 
+// 사진 Modal style
 const theme = createTheme({
   components: {
     MuiModal: {
@@ -74,10 +75,18 @@ export default function TicketDetail() {
     <Wrapper>
       <ThemeProvider theme={theme}>
         <ButtonContainer>
-          <EditButton>Edit</EditButton>
-          <DeleteButton onClick={handleDelete}>
-            <DeleteOutlineOutlinedIcon />
-          </DeleteButton>
+          <BackButton onClick={() => navigate(`/ticket-list`)}>
+            <ArrowBackIcon />
+            Back to List
+          </BackButton>
+          <RightButtons>
+            <EditButton onClick={() => navigate(`/edit-ticket/${id}`)}>
+              Edit
+            </EditButton>
+            <DeleteButton onClick={handleDelete}>
+              <DeleteOutlineOutlinedIcon />
+            </DeleteButton>
+          </RightButtons>
         </ButtonContainer>
         <PhotoWrapper>
           <Title>📷 Memory</Title>
@@ -123,10 +132,6 @@ export default function TicketDetail() {
           </TrackContainer>
         </SetlistContainer>
       </FlexContainer>
-      <NavLink to="/ticket-list">
-        <ArrowBackIcon />
-        Back to List
-      </NavLink>
     </Wrapper>
   );
 }
@@ -139,33 +144,35 @@ const Wrapper = styled.div`
   margin: 0 30px;
   overflow: auto;
   background: var(--light);
-
-  @media screen and (min-width: 1450px) {
-    display: grid;
-    grid-template-columns: 800px 1fr;
-  }
-
-  @media screen and (max-width: 1024px) {
-    margin: 0;
-    padding: 50px 30px;
-    width: 100%;
-  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
-  margin-left: auto;
+  justify-content: space-between;
 `;
 
+const RightButtons = styled.div`
+  display: flex;
+  gap: 10px;
+`;
 const EditButton = styled.button`
   ${sharedButton}
   width: 100px;
   padding: 10px;
 `;
+
 const DeleteButton = styled.button`
   ${sharedButton}
   padding: 10px;
+`;
+
+const BackButton = styled.button`
+  ${sharedButton}
+  width: 160px;
+  margin-left: 0;
+  text-decoration: none;
+  min-height: 40px;
 `;
 
 const FlexContainer = styled.div`
@@ -256,12 +263,4 @@ const Title = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-`;
-
-const NavLink = styled(Link)`
-  ${sharedButton}
-  width: 160px;
-  margin-left: auto;
-  text-decoration: none;
-  min-height: 40px;
 `;

@@ -8,6 +8,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { sharedWrapper } from "../sharedStyles";
 import { TicketInfoType } from "@type/ticket";
+import dayjs, { Dayjs } from "dayjs";
 
 interface DetailsFormProps {
   ticketInfo: TicketInfoType;
@@ -18,6 +19,31 @@ export default function DetailsForm({
   ticketInfo,
   setTicketInfo,
 }: DetailsFormProps) {
+  const parseDateStringToDayjs = (dateString: string): Dayjs | null => {
+    if (!dateString) return null;
+
+    // "xxxx.x.x" 형태 문자열 parse to Dayjs
+    const match = dateString.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})/);
+
+    if (match) {
+      const [, year, month, day] = match;
+      return dayjs(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
+    }
+    return null;
+  };
+
+  const parseTimeStringToDayjs = (timeString: string): Dayjs | null => {
+    if (!timeString) return null;
+
+    // "xx:xx" 형태 문자열 parse to Dayjs
+    const match = timeString.match(/(\d{1,2}):(\d{1,2})/);
+
+    if (match) {
+      const [, hours, minutes] = match;
+      return dayjs().hour(parseInt(hours)).minute(parseInt(minutes));
+    }
+    return null;
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const maxLength = name === "title" ? 30 : 12;
@@ -30,12 +56,11 @@ export default function DetailsForm({
     }
   };
 
-  const handleDateChange = (value: Date | null) => {
+  const handleDateChange = (value: Dayjs | null) => {
     if (value !== null) {
-      const date = new Date(value);
-      const stringDate = `${date.getFullYear()}. ${
-        date.getMonth() + 1
-      }. ${date.getDate()}`;
+      const stringDate = `${value.year()}. ${
+        value.month() + 1
+      }. ${value.date()}`;
       setTicketInfo((prev) => ({
         ...prev,
         date: stringDate,
@@ -43,11 +68,10 @@ export default function DetailsForm({
     }
   };
 
-  const handleTimeChange = (value: Date | null) => {
+  const handleTimeChange = (value: Dayjs | null) => {
     if (value !== null) {
-      const time = new Date(value);
-      const hours = String(time.getHours()).padStart(2, "0");
-      const minutes = String(time.getMinutes()).padStart(2, "0");
+      const hours = String(value.hour()).padStart(2, "0");
+      const minutes = String(value.minute()).padStart(2, "0");
       const stringTime = `${hours}:${minutes}`;
       setTicketInfo((prev) => ({
         ...prev,
@@ -80,12 +104,14 @@ export default function DetailsForm({
               <DatePicker
                 label="DATE"
                 name="date"
+                value={parseDateStringToDayjs(ticketInfo.date)}
                 views={["year", "month", "day"]}
                 onChange={handleDateChange}
               />
               <TimePicker
                 label="START TIME"
                 name="time"
+                value={parseTimeStringToDayjs(ticketInfo.time)}
                 onChange={handleTimeChange}
               />
             </LocalizationProvider>

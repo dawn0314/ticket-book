@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Home, TicketList, Login, CreateTicket, CreateAccount } from "@routes/";
+import {
+  Home,
+  TicketList,
+  Login,
+  CreateTicket,
+  CreateAccount,
+  EditTicket,
+} from "@routes/";
 import { TicketDetail, ProtectedRoute } from "@components/";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createGlobalStyle, styled } from "styled-components";
@@ -26,6 +33,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <CreateTicket />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/edit-ticket/:id",
+    element: (
+      <ProtectedRoute>
+        <EditTicket />
       </ProtectedRoute>
     ),
   },

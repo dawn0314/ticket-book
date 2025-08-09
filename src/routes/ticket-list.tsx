@@ -24,15 +24,6 @@ export default function TicketList() {
 
   return (
     <Wrapper>
-      {/* {[
-        displayedTickets
-          .slice(0, 2)
-          .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),
-        <Spring src={spring} key={1} />,
-        displayedTickets
-          .slice(2)
-          .map((ticket) => <Ticket key={ticket.id} ticket={ticket} />),
-      ]} */}
       {displayedTickets.map((ticket, index) => (
         <div key={ticket.id}>
           <Ticket ticket={ticket} />
@@ -100,5 +91,10 @@ const Text = styled.span`
 `;
 
 const Spring = styled.img`
-  margin: 0 -100px;
+  margin: 40px -100px 0 -100px;
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+    margin: 40px 0 0 0;
+  }
 `;

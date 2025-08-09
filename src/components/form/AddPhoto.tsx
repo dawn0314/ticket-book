@@ -4,20 +4,34 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { sharedWrapper, sharedTitle, sharedButton } from "../sharedStyles";
 import { Alert } from "@mui/material";
-import { TicketInfoType } from "@type/ticket";
+import { ExtendedTicketInfoType, TicketInfoType } from "@type/ticket";
 
 interface AddPhotoProps {
   setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
   setFiles: (files: File[]) => void;
+  ticket?: ExtendedTicketInfoType;
 }
 
-export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
+export default function AddPhoto({
+  setTicketInfo,
+  setFiles,
+  ticket,
+}: AddPhotoProps) {
   const [files, setLocalFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [mainImgIndex, setMainImgIndex] = useState(0);
   const [alert, setAlert] = useState(false);
+  const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
 
   const maxFileSize = 4 * 1024 * 1024;
+
+  useEffect(() => {
+    if (ticket?.photo && previewUrls.length === 0) {
+      setPreviewUrls(ticket.photo);
+      setExistingPhotos(ticket.photo);
+      setMainImgIndex(ticket.ticketInfo.mainPhoto);
+    }
+  }, [ticket]);
 
   useEffect(() => {
     setFiles(files);
@@ -30,6 +44,13 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
       clearTimeout(timeId);
     };
   }, [files, setFiles, alert]);
+
+  useEffect(() => {
+    setTicketInfo((prev) => ({
+      ...prev,
+      photo: previewUrls,
+    }));
+  }, [previewUrls, setTicketInfo]);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
@@ -61,24 +82,44 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
   };
 
   const handleDeletePhoto = (index: number) => {
-    const updatedFiles = files.filter((_, i) => i !== index);
-    const updatedPreviews = previewUrls.filter((_, i) => i !== index);
+    // 기존 사진인지 새로 추가된 사진인지 구분
+    const isExistingPhoto = ticket?.photo && index < ticket.photo.length;
 
-    setLocalFiles(updatedFiles);
-    setPreviewUrls(updatedPreviews);
+    if (isExistingPhoto) {
+      // 기존 사진 삭제 - preview에서만 제거
+      const updatedPreviews = previewUrls.filter((_, i) => i !== index);
+      setPreviewUrls(updatedPreviews);
+    } else {
+      // 새로 추가된 사진 삭제
+      const fileIndex = index - (ticket?.photo?.length || 0);
+      const updatedFiles = files.filter((_, i) => i !== fileIndex);
+      const updatedPreviews = previewUrls.filter((_, i) => i !== index);
 
-    if (mainImgIndex === index && updatedFiles.length > 0) {
-      setMainImgIndex(0);
-      setTicketInfo((prev) => ({
-        ...prev,
-        mainPhoto: 0,
-      }));
-    } else if (mainImgIndex === index) {
-      setMainImgIndex(-1);
-      setTicketInfo((prev) => ({
-        ...prev,
-        mainPhoto: -1,
-      }));
+      setLocalFiles(updatedFiles);
+      setPreviewUrls(updatedPreviews);
+
+      // 메인 사진 인덱스 조정
+      if (mainImgIndex === index && previewUrls.length > 1) {
+        const newMainIndex = index === 0 ? 1 : 0;
+        setMainImgIndex(newMainIndex);
+        setTicketInfo((prev) => ({
+          ...prev,
+          mainPhoto: newMainIndex,
+        }));
+      } else if (mainImgIndex === index) {
+        setMainImgIndex(-1);
+        setTicketInfo((prev) => ({
+          ...prev,
+          mainPhoto: -1,
+        }));
+      } else if (mainImgIndex > index) {
+        // 삭제된 사진보다 뒤에 있던 메인 사진의 인덱스 조정
+        setMainImgIndex(mainImgIndex - 1);
+        setTicketInfo((prev) => ({
+          ...prev,
+          mainPhoto: prev.mainPhoto - 1,
+        }));
+      }
     }
   };
 
@@ -103,10 +144,9 @@ export default function AddPhoto({ setTicketInfo, setFiles }: AddPhotoProps) {
       </Title>
       <PreviewContainer>
         {previewUrls.map((url, index) => (
-          <ImageContainer>
+          <ImageContainer key={index}>
             {mainImgIndex === index ? <MainImgText>Main</MainImgText> : null}
             <ImagePreview
-              key={index}
               src={url}
               alt={`Preview ${index}`}
               onClick={() => handleMainPhoto(index)}

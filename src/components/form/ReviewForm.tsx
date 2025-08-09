@@ -3,10 +3,14 @@ import { sharedWrapper, sharedTitle } from "../sharedStyles";
 import { TicketInfoType } from "@type/ticket";
 
 interface ReviewFormProps {
+  ticketInfo?: TicketInfoType;
   setTicketInfo: React.Dispatch<React.SetStateAction<TicketInfoType>>;
 }
 
-export default function ReviewForm({ setTicketInfo }: ReviewFormProps) {
+export default function ReviewForm({
+  ticketInfo,
+  setTicketInfo,
+}: ReviewFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     setTicketInfo((prev) => ({
@@ -14,10 +18,11 @@ export default function ReviewForm({ setTicketInfo }: ReviewFormProps) {
       review: value,
     }));
   };
+
   return (
     <Wrapper>
       <Title>REVIEW</Title>
-      <Textarea onChange={handleChange}></Textarea>
+      <Textarea value={ticketInfo?.review} onChange={handleChange}></Textarea>
     </Wrapper>
   );
 }
